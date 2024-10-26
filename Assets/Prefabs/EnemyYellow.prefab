@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 445610115505391597}
   - component: {fileID: 673950522988448421}
   - component: {fileID: 8158855677417840551}
+  - component: {fileID: 2533256891745923056}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: EnemyYellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 244400866b941a940ba413d7b47dd9cd, type: 2}
+  - {fileID: 2100000, guid: 738c7f269d2a5af4c821b3a48a0bd829, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -148,4 +149,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d212c0c53e4f87142ba4c63af94c5e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+--- !u!114 &2533256891745923056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3562128752001086425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451e96b9224f4f747a0355b0ed9341d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 5
+  _target: {fileID: 0}

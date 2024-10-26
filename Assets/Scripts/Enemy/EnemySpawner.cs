@@ -1,14 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private List<Transform> _spawnPoints;
+    [SerializeField] private EnemyType _enemyType;
+    [SerializeField] private Transform _target;
     [SerializeField] private float _coolDown;
-    [SerializeField] private Enemy _enemyPrefab;
-    [SerializeField] private Transform _enemyParent;
-    [SerializeField] private Vector3 _moveDirection;
+    [SerializeField] private EnemyFactory _enemyFactory;
 
     private void OnEnable()
     {
@@ -21,21 +19,8 @@ public class EnemySpawner : MonoBehaviour
         
         while (enabled)
         {
-            Create();
+            _enemyFactory.Create(_enemyType, transform.position, _target);
             yield return wait;
         }
-    }
-    
-    private void Create()
-    {
-        Vector3 position = GetSpawnPoint();
-        var enemy = Instantiate(_enemyPrefab, position, Quaternion.identity, _enemyParent);
-        enemy.Move(_moveDirection);
-    }
-
-    private Vector3 GetSpawnPoint()
-    {
-        int randomPoint = Random.Range(0, _spawnPoints.Count);
-        return _spawnPoints[randomPoint].position;
     }
 }
