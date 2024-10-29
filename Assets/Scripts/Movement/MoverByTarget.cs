@@ -21,7 +21,8 @@ public class MoverByTarget : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_target == null) return;
+        if (_target == null) 
+            return;
         
         Rotate();
         Move();

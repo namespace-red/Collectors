@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private EnemyType _enemyType;
+    [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private Transform _target;
     [SerializeField] private float _coolDown;
     [SerializeField] private EnemyFactory _enemyFactory;
@@ -19,7 +19,8 @@ public class EnemySpawner : MonoBehaviour
         
         while (enabled)
         {
-            _enemyFactory.Create(_enemyType, transform.position, _target);
+            Enemy enemy = _enemyFactory.Create(_enemyPrefab, transform.position);
+            enemy.SetTarget(_target);
             yield return wait;
         }
     }
