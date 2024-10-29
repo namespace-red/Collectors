@@ -167,9 +167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6223981d7b058d34ebcfb371e84f2e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _redPrefab: {fileID: 8158855677417840551, guid: bb96d79cb25b991468d1043e8a2bb7e0, type: 3}
-  _orangePrefab: {fileID: 8158855677417840551, guid: 48d477e35aeda4948a02383cfbe15d2a, type: 3}
-  _yellowPrefab: {fileID: 8158855677417840551, guid: 34b31227f56c3d74590cc98a7e65a27e, type: 3}
   _enemyParent: {fileID: 1663893730}
 --- !u!1 &231928323
 GameObject:
@@ -384,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774ad181006a5da408e1d7ff40abbf67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 2
+  _enemyPrefab: {fileID: 8158855677417840551, guid: 34b31227f56c3d74590cc98a7e65a27e, type: 3}
   _target: {fileID: 745164070}
   _coolDown: 5
   _enemyFactory: {fileID: 8984376}
@@ -675,7 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774ad181006a5da408e1d7ff40abbf67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 0
+  _enemyPrefab: {fileID: 8158855677417840551, guid: bb96d79cb25b991468d1043e8a2bb7e0, type: 3}
   _target: {fileID: 831944208}
   _coolDown: 5
   _enemyFactory: {fileID: 8984376}
@@ -1095,7 +1092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774ad181006a5da408e1d7ff40abbf67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType: 1
+  _enemyPrefab: {fileID: 8158855677417840551, guid: 48d477e35aeda4948a02383cfbe15d2a, type: 3}
   _target: {fileID: 1519240469}
   _coolDown: 5
   _enemyFactory: {fileID: 8984376}
@@ -1109,7 +1106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1308278927}
   m_Layer: 0
-  m_Name: SpawnPoints
+  m_Name: WayPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
