@@ -1,19 +1,26 @@
+using System;
 using UnityEngine;
 
-public class MoverByPoints : MoverByTarget
+public class MoverByPoints : MonoBehaviour
 {
     private const float PositionMagnitudeInaccuracy = 0.1f;
         
-    [SerializeField] private Transform _pointParent;
+    [SerializeField] private Transform _wayPointParent;
+    [SerializeField] private float _speed;
+    [SerializeField] private Transform[] _wayPoints;
     
-    private Transform[] _points;
+    private Rigidbody _rigidbody;
     private int _currentIndex;
+    
+    public Transform Target => _wayPoints[_currentIndex];
+    private Vector3 Direction => (Target.position - transform.position).normalized;
     
     private void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody>();
-        InitPoints();
-        Target = _points[_currentIndex];
+        if (_wayPoints == null)
+            throw new NullReferenceException(name +  " WayPoints is empty. Run InitWayPoints in ContextMenu");
+        
+        _rigidbody = GetComponent<Rigidbody>();
     }
     
     private void FixedUpdate()
@@ -21,26 +28,34 @@ public class MoverByPoints : MoverByTarget
         if ((Target.position - transform.position).magnitude < PositionMagnitudeInaccuracy)
         {
             SetNextPoint();
-            Target = _points[_currentIndex];
         }
 
         Rotate();
         Move();
     }
 
-    private void InitPoints()
+    [ContextMenu("InitWayPoints")]
+    private void InitWayPoints()
     {
-        _points = new Transform[_pointParent.childCount];
+        _wayPoints = new Transform[_wayPointParent.childCount];
 
-        for (int i = 0; i < _pointParent.childCount; i++)
-            _points[i] = _pointParent.GetChild(i).transform;
+        for (int i = 0; i < _wayPointParent.childCount; i++)
+            _wayPoints[i] = _wayPointParent.GetChild(i);
     }
 
     private void SetNextPoint()
     {
-        _currentIndex++;
+        _currentIndex = ++_currentIndex % _wayPoints.Length;
+    }
+    
+    private void Rotate()
+    {
+        transform.forward = Direction;
+    }
 
-        if (_currentIndex == _points.Length)
-            _currentIndex = 0;
+    private void Move()
+    {
+        Vector3 step = Direction * (_speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(transform.position + step);
     }
 }

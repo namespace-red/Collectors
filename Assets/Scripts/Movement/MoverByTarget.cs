@@ -1,44 +1,47 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class MoverByTarget : MonoBehaviour
 {
-    [SerializeField] protected float Speed;
+    [SerializeField] private float _speed;
     [SerializeField] private Transform _target;
 
-    protected Rigidbody Rigidbody;
+    private Rigidbody _rigidbody;
 
     public Transform Target
     {
         get => _target;
-        set => _target = value;
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(value));
+            
+            _target = value;
+        }
     }
 
+    private Vector3 Direction => (_target.position - transform.position).normalized;
+    
     private void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
     {
-        if (_target == null) 
-            return;
-        
         Rotate();
         Move();
     }
 
-    protected void Rotate()
+    private void Rotate()
     {
-        transform.forward = (_target.position - transform.position).normalized;
+        transform.forward = Direction;
     }
 
-    protected void Move()
+    private void Move()
     {
-        Vector3 direction = (_target.position - transform.position).normalized;
-        Vector3 step = direction * (Speed * Time.fixedDeltaTime);
-        Vector3 position = transform.position + step;
-
-        Rigidbody.MovePosition(position);
+        Vector3 step = Direction * (_speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(transform.position + step);
     }
 }
