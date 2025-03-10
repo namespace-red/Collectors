@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Radar))]
-public class Base : MonoBehaviour
+public class MainHome : MonoBehaviour
 {
     [SerializeField] private CollectorSpawner _collectorSpawner;
     [SerializeField] private int _collectorsCount;
@@ -34,6 +34,11 @@ public class Base : MonoBehaviour
         // Подписаться на радар
     }
 
+    private void OnEnable()
+    {
+        _radar.DetectedPickable += OnDetectedPickables;
+    }
+
     private void OnDestroy()
     {
         foreach (var collector in _collectors)
@@ -54,7 +59,12 @@ public class Base : MonoBehaviour
         // Подписаться на освобождение Collector
     }
 
-    private void OnRadar(IPickable picked)
+    private void OnCollectorFreedOut(Collector collector)
+    {
+        _freeCollectors.Add(collector);
+    }
+
+    private void OnDetectedPickables(List<IPickable> pickables)
     {
         if (_freeCollectors.Count == 0)
             return;
@@ -63,10 +73,9 @@ public class Base : MonoBehaviour
         _freeCollectors.Remove(collector);
         
         //указать цель picked collector'у
-    }
-
-    private void OnCollectorFreedOut(Collector collector)
-    {
-        _freeCollectors.Add(collector);
+        foreach (var pickable in pickables)
+        {
+            Debug.Log(pickable.Transform.position);
+        }
     }
 }

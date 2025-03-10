@@ -20,7 +20,7 @@ public class Spawner<T> : MonoBehaviour
             throw new NullReferenceException(nameof(_prefab));
     }
 
-    public T Get()
+    public virtual T Get()
     {
         return Instantiate(_prefab, _position.Get(), Quaternion.identity, transform);
     }
