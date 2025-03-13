@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Radar))]
@@ -9,7 +10,6 @@ public class MainHome : MonoBehaviour
     [SerializeField] private int _collectorsCount;
 
     private List<Collector> _collectors = new List<Collector>();
-    private List<Collector> _freeCollectors = new List<Collector>();
     private Radar _radar;
 
     private void OnValidate()
@@ -41,11 +41,6 @@ public class MainHome : MonoBehaviour
 
     private void OnDestroy()
     {
-        foreach (var collector in _collectors)
-        {
-            // Отписаться от освобождение Collector
-        }
-        
         // Отписаться от радар
     }
 
@@ -55,27 +50,24 @@ public class MainHome : MonoBehaviour
         
         var collector = _collectorSpawner.Get();
         _collectors.Add(collector);
-        _freeCollectors.Add(collector);
-        // Подписаться на освобождение Collector
-    }
-
-    private void OnCollectorFreedOut(Collector collector)
-    {
-        _freeCollectors.Add(collector);
     }
 
     private void OnDetectedPickables(List<IPickable> pickables)
     {
-        if (_freeCollectors.Count == 0)
+        var collector = GetFreeCollector();
+        
+        if (collector == null)
             return;
 
-        var collector = _freeCollectors[0];
-        _freeCollectors.Remove(collector);
-        
         //указать цель picked collector'у
         foreach (var pickable in pickables)
         {
             Debug.Log(pickable.Transform.position);
         }
+    }
+
+    private Collector GetFreeCollector()
+    {
+        return _collectors.FirstOrDefault(collector => collector.IsBusy);
     }
 }

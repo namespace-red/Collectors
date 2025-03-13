@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class NearbyTransitionConditions : ITransitionCondition
+public class NearbyPointTransitionConditions : ITransitionCondition
 {
     private const float Inaccuracy = 0.1f;
     
     private readonly Transform _self;
     private readonly Vector3 _targetPoint;
 
-    public NearbyTransitionConditions(Transform self, Vector3 targetPoint)
+    public NearbyPointTransitionConditions(Transform self, Vector3 targetPoint)
     {
         _self = self;
         _targetPoint = targetPoint;
