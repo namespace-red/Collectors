@@ -8,7 +8,7 @@ public class Collector : MonoBehaviour
 
     private NearbyPointTransitionConditions _waitPointNearbyPointTc;
     private FlagTransitionConditions _haveTargetTc;
-    // var animatedTransitionConditions = new AnimatedTransitionConditions();
+    private NearbyTransitionConditions _targetNearbyTc;
     
     private IPosition _waitArea;
     private IPosition _warehousePoint;
@@ -57,22 +57,33 @@ public class Collector : MonoBehaviour
         InitStateMachine();
     }
 
+    public void SetPickableTarget(IPickable pickable)
+    {
+        var target = ((MonoBehaviour) pickable).transform;
+        MoverToTarget.Target = target;
+        _targetNearbyTc.Target = target;
+
+        _haveTargetTc.Flag = true;
+
+        IsBusy = true;
+    }
+    
     private void InitStateMachine()
     {
         var moverToWaitPointState = new MoverToPointState(MoverToWaitPoint);
-        // var moverToTargetState = new MoverToTargetState();
         var idleState = new IdleState();
-        // var pickUp = new PickUpState();
+        var idleState2 = new IdleState();
+        var moverToTargetState = new MoverToTargetState(MoverToTarget);
         
         _waitPointNearbyPointTc = new NearbyPointTransitionConditions(transform, MoverToWaitPoint.TargetPoint);
         _haveTargetTc = new FlagTransitionConditions();
-        // animatedTransitionConditions = new AnimatedTransitionConditions();
+        _targetNearbyTc = new NearbyTransitionConditions(transform);
         
         _stateMachine = new StateMachine();
         _stateMachine.AddTransition(moverToWaitPointState, idleState, _waitPointNearbyPointTc);
-        // _stateMachine.AddTransition(idleState, patrolState, emptyTransitionConditions);
-        // _stateMachine.AddTransition(patrolState, targetPursuerState, playerDetectorTransitionConditions);
-        // _stateMachine.AddTransitionFromAnyStates(deathState, deathTransitionConditions);
+        _stateMachine.AddTransition(moverToWaitPointState, moverToTargetState, _haveTargetTc);
+        _stateMachine.AddTransition(idleState, moverToTargetState, _haveTargetTc);
+        _stateMachine.AddTransition(moverToTargetState, idleState2, _targetNearbyTc);
         _stateMachine.SetFirstState(moverToWaitPointState);
     }
     

@@ -30,8 +30,6 @@ public class MainHome : MonoBehaviour
             --_collectorsCount;
             CreateCollector();
         }
-        
-        // Подписаться на радар
     }
 
     private void OnEnable()
@@ -39,9 +37,9 @@ public class MainHome : MonoBehaviour
         _radar.DetectedPickable += OnDetectedPickables;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        // Отписаться от радар
+        _radar.DetectedPickable -= OnDetectedPickables;
     }
 
     private void CreateCollector()
@@ -54,20 +52,19 @@ public class MainHome : MonoBehaviour
 
     private void OnDetectedPickables(List<IPickable> pickables)
     {
-        var collector = GetFreeCollector();
-        
-        if (collector == null)
-            return;
-
-        //указать цель picked collector'у
         foreach (var pickable in pickables)
         {
-            Debug.Log(pickable.Transform.position);
+            var collector = GetFreeCollector();
+        
+            if (collector == null)
+                return;
+
+            collector.SetPickableTarget(pickable);
         }
     }
 
     private Collector GetFreeCollector()
     {
-        return _collectors.FirstOrDefault(collector => collector.IsBusy);
+        return _collectors.FirstOrDefault(collector => collector.IsBusy == false);
     }
 }
