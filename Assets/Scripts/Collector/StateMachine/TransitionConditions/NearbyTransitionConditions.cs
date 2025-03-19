@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NearbyTransitionConditions : ITransitionCondition
 {
-    private const float Inaccuracy = 1.1f;
+    private const float Inaccuracy = 1.3f;
     
     private readonly Transform _self;
     private Transform _target;
@@ -22,7 +22,7 @@ public class NearbyTransitionConditions : ITransitionCondition
 
     public NearbyTransitionConditions(Transform self)
     {
-        _self = self;
+        _self = self ? self : throw new NullReferenceException(nameof(self));
     }
     
     public bool IsDone()

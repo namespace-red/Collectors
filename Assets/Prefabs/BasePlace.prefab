@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af80ffe6a5307bb4ea3bea72dc04bb00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coolDown: 5
+  _coolDown: 1
 --- !u!114 &5700085917281311281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65eef52483074c44a87d5e2113bb8bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 3575113678371640319, guid: eeaa94c9d51c4c547af78e3e647e65b1, type: 3}
+  _prefab: {fileID: 296410185969235420, guid: 621eba487ccba2b4a838d2304326558a, type: 3}
   _waitArea: {fileID: 8048405796570744794}
   _warehousePoint: {fileID: 4046975823262797561}

@@ -1,18 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class PickUpState : MonoBehaviour
+public class PickUpState : IState
 {
-    // Start is called before the first frame update
-    void Start()
+    private readonly CollectorAnimations _animations;
+    
+    private readonly Animator _animator;
+    private readonly Transform _pickUpPoint;
+    private readonly MoverToTarget _moverToTarget;
+
+    public PickUpState(CollectorAnimations animations, Transform pickUpPoint, MoverToTarget moverToTarget)
     {
-        
+        _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
+        _pickUpPoint = pickUpPoint ? pickUpPoint : throw new NullReferenceException(nameof(pickUpPoint));
+        _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
+    }
+    
+    public void Enter()
+    {
+        _moverToTarget.Target.SetParent(_pickUpPoint);
+        _moverToTarget.Target.localPosition = Vector3.zero;
+        _animations.PlayPickUp();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Exit()
     {
-        
+    }
+
+    public void Update()
+    {
+    }
+
+    public void FixedUpdate()
+    {
     }
 }

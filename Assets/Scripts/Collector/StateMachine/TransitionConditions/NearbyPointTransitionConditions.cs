@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class NearbyPointTransitionConditions : ITransitionCondition
@@ -9,7 +10,7 @@ public class NearbyPointTransitionConditions : ITransitionCondition
 
     public NearbyPointTransitionConditions(Transform self, Vector3 targetPoint)
     {
-        _self = self;
+        _self = self ? self : throw new NullReferenceException(nameof(self));
         _targetPoint = targetPoint;
     }
     

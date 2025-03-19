@@ -1,17 +1,29 @@
+using System;
 using UnityEngine;
 
+[RequireComponent(typeof(CollectorAnimations))]
 [RequireComponent(typeof(MoverToTarget))]
 [RequireComponent(typeof(MoverToPoint))]
 public class Collector : MonoBehaviour
 {
+    [SerializeField] private Transform _pickUpPoint;
+    
     private StateMachine _stateMachine = new StateMachine();
 
+    private MoverToPointState _moverToWaitPointState;
+    private MoverToPointState _moverToWarehousePointState;
+    private IdleState _idleState;
+    private MoverToTargetState _moverToTargetState;
+    private PickUpState _pickUpState;
+    
     private NearbyPointTransitionConditions _waitPointNearbyPointTc;
     private FlagTransitionConditions _haveTargetTc;
+    private FlagTransitionConditions _pickUpTc;
     private NearbyTransitionConditions _targetNearbyTc;
     
     private IPosition _waitArea;
     private IPosition _warehousePoint;
+    private CollectorAnimations _animations;
 
     public bool IsBusy
     {
@@ -31,10 +43,27 @@ public class Collector : MonoBehaviour
         private set;
     }
 
+    private void OnValidate()
+    {
+        if (_pickUpPoint == null)
+            throw new NullReferenceException(nameof(_pickUpPoint));
+    }
+
     private void Awake()
     {
         MoverToTarget = GetComponent<MoverToTarget>();
         MoverToWaitPoint = GetComponent<MoverToPoint>();
+        _animations = GetComponent<CollectorAnimations>();
+    }
+
+    private void OnEnable()
+    {
+        _animations.PickUpComplete += OnPickUpAnimationComplete;
+    }
+
+    private void OnDisable()
+    {
+        _animations.PickUpComplete -= OnPickUpAnimationComplete;
     }
 
     private void Update()
@@ -52,8 +81,6 @@ public class Collector : MonoBehaviour
         _waitArea = waitArea;
         _warehousePoint = warehousePoint;
 
-        SetRandomWaitPoint();
-
         InitStateMachine();
     }
 
@@ -70,25 +97,28 @@ public class Collector : MonoBehaviour
     
     private void InitStateMachine()
     {
-        var moverToWaitPointState = new MoverToPointState(MoverToWaitPoint);
-        var idleState = new IdleState();
-        var idleState2 = new IdleState();
-        var moverToTargetState = new MoverToTargetState(MoverToTarget);
+        _moverToWaitPointState = new MoverToPointState(MoverToWaitPoint, _waitArea);
+        _moverToWarehousePointState = new MoverToPointState(MoverToWaitPoint, _warehousePoint);
+        _idleState = new IdleState();
+        _moverToTargetState = new MoverToTargetState(MoverToTarget);
+        _pickUpState = new PickUpState(_animations, _pickUpPoint, MoverToTarget);
         
         _waitPointNearbyPointTc = new NearbyPointTransitionConditions(transform, MoverToWaitPoint.TargetPoint);
         _haveTargetTc = new FlagTransitionConditions();
+        _pickUpTc = new FlagTransitionConditions();
         _targetNearbyTc = new NearbyTransitionConditions(transform);
         
         _stateMachine = new StateMachine();
-        _stateMachine.AddTransition(moverToWaitPointState, idleState, _waitPointNearbyPointTc);
-        _stateMachine.AddTransition(moverToWaitPointState, moverToTargetState, _haveTargetTc);
-        _stateMachine.AddTransition(idleState, moverToTargetState, _haveTargetTc);
-        _stateMachine.AddTransition(moverToTargetState, idleState2, _targetNearbyTc);
-        _stateMachine.SetFirstState(moverToWaitPointState);
+        _stateMachine.AddTransition(_moverToWaitPointState, _idleState, _waitPointNearbyPointTc);
+        _stateMachine.AddTransition(_moverToWaitPointState, _moverToTargetState, _haveTargetTc);
+        _stateMachine.AddTransition(_idleState, _moverToTargetState, _haveTargetTc);
+        _stateMachine.AddTransition(_moverToTargetState, _pickUpState, _targetNearbyTc);
+        _stateMachine.AddTransition(_pickUpState, _moverToWarehousePointState, _pickUpTc);
+        _stateMachine.SetFirstState(_moverToWaitPointState);
     }
-    
-    private void SetRandomWaitPoint()
+
+    private void OnPickUpAnimationComplete()
     {
-        MoverToWaitPoint.TargetPoint = _waitArea.Get();
+        _pickUpTc.Flag = true;
     }
 }

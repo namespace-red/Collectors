@@ -19,7 +19,7 @@ public abstract class BasePhysicsMover : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        Rotate();
+        // Rotate();
         Move();
     }
 

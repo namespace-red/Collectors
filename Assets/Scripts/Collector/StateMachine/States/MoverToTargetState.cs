@@ -1,10 +1,12 @@
+using System;
+
 public class MoverToTargetState : IState
 {
     private readonly MoverToTarget _moverToTarget;
 
     public MoverToTargetState(MoverToTarget moverToTarget)
     {
-        _moverToTarget = moverToTarget;
+        _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
     }
 
     public void Enter()
