@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 8054994611245023520}
   - component: {fileID: 7811772149475322787}
   - component: {fileID: 296410185969235420}
+  - component: {fileID: 9170217094714840538}
   m_Layer: 0
   m_Name: Collector
   m_TagString: Untagged
@@ -204,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451e96b9224f4f747a0355b0ed9341d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
+  Speed: 10
   _target: {fileID: 0}
 --- !u!114 &7811772149475322787
 MonoBehaviour:
@@ -218,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d024deaaa004b4b8f4c0891d82a8b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
+  Speed: 10
 --- !u!114 &296410185969235420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,3 +233,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pickUpPoint: {fileID: 5741953722824236897}
+--- !u!114 &9170217094714840538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484654367357460977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5020348ae31000f499e2aba0bdcf899f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
