@@ -7,7 +7,7 @@ using UnityEngine;
 public class MainHome : MonoBehaviour
 {
     [SerializeField] private CollectorSpawner _collectorSpawner;
-    [SerializeField] private int _collectorsCount;
+    [SerializeField] private int _startCollectorsCount;
 
     private List<Collector> _collectors = new List<Collector>();
     private List<IPickable> _pickablesInWork = new List<IPickable>();
@@ -26,28 +26,23 @@ public class MainHome : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < _collectorsCount; i++)
-        {
-            --_collectorsCount;
-            CreateCollector();
-        }
+        _collectorSpawner.Create(_startCollectorsCount);
     }
 
     private void OnEnable()
     {
         _radar.DetectedPickable += OnDetectedPickables;
+        _collectorSpawner.Created += OnCreatedCollector;
     }
 
     private void OnDisable()
     {
         _radar.DetectedPickable -= OnDetectedPickables;
+        _collectorSpawner.Created -= OnCreatedCollector;
     }
 
-    private void CreateCollector()
+    private void OnCreatedCollector(Collector collector)
     {
-        ++_collectorsCount;
-        
-        var collector = _collectorSpawner.Get();
         _collectors.Add(collector);
     }
 

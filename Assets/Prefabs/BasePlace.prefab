@@ -296,7 +296,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collectorSpawner: {fileID: 2403362316993557146}
-  _collectorsCount: 3
+  _startCollectorsCount: 3
+  _collectorsCount: 0
 --- !u!1 &8051043414264802515
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,3 +358,4 @@ MonoBehaviour:
   _prefab: {fileID: 296410185969235420, guid: 621eba487ccba2b4a838d2304326558a, type: 3}
   _waitArea: {fileID: 8048405796570744794}
   _warehousePoint: {fileID: 4046975823262797561}
+  _secCoolDown: 0.5

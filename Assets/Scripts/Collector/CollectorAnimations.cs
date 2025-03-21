@@ -6,7 +6,7 @@ public class CollectorAnimations : MonoBehaviour
 {
     private Animator _animator;
 
-    public Action PickUpComplete;
+    public event Action PickUpComplete;
     
     private void Awake()
     {

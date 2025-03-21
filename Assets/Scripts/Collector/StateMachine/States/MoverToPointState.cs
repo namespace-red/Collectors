@@ -5,7 +5,7 @@ public class MoverToPointState : IState
     private readonly MoverToPoint _moverToPoint;
     private readonly IPosition _position;
 
-    public Action Finished;
+    public event Action Finished;
 
     public MoverToPointState(MoverToPoint moverToPoint, IPosition position)
     {

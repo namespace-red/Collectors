@@ -14,7 +14,7 @@ public class Spawner<T> : MonoBehaviour
         _position = GetComponent<IPosition>(); 
     }
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         if (_prefab == null)
             throw new NullReferenceException(nameof(_prefab));
