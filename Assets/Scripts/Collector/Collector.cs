@@ -93,11 +93,10 @@ public class Collector : MonoBehaviour
         InitStateMachine();
     }
 
-    public void SetPickableTarget(IPickable pickable)
+    public void SetPickableTarget(IPickable target)
     {
-        var target = ((MonoBehaviour) pickable).transform;
-        MoverToTarget.Target = target;
-        _targetNearbyTc.Target = target;
+        MoverToTarget.Target = target.Transform;
+        _targetNearbyTc.Target = target.Transform;
 
         _haveTargetTc.Flag = true;
         IsBusy = true;
@@ -137,7 +136,7 @@ public class Collector : MonoBehaviour
     private void OnCameToWarehouse()
     {
         var pickable = _inventory.Take();
-        Destroy(((MonoBehaviour) pickable).gameObject);
+        Destroy(pickable.Transform.gameObject);
         IsBusy = false;
         BroughtPickable?.Invoke();
     }

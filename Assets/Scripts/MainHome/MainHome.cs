@@ -10,6 +10,7 @@ public class MainHome : MonoBehaviour
     [SerializeField] private int _collectorsCount;
 
     private List<Collector> _collectors = new List<Collector>();
+    private List<IPickable> _pickablesInWork = new List<IPickable>();
     private Radar _radar;
 
     private void OnValidate()
@@ -54,11 +55,16 @@ public class MainHome : MonoBehaviour
     {
         foreach (var pickable in pickables)
         {
+            if (_pickablesInWork.Contains(pickable))
+                break;
+            
             var collector = GetFreeCollector();
         
             if (collector == null)
                 return;
 
+            _pickablesInWork.Add(pickable);
+            pickable.Destroying += OnDestroyingPickable;
             collector.SetPickableTarget(pickable);
         }
     }
@@ -66,5 +72,11 @@ public class MainHome : MonoBehaviour
     private Collector GetFreeCollector()
     {
         return _collectors.FirstOrDefault(collector => collector.IsBusy == false);
+    }
+
+    private void OnDestroyingPickable(IPickable pickable)
+    {
+        pickable.Destroying -= OnDestroyingPickable;
+        _pickablesInWork.Remove(pickable);
     }
 }

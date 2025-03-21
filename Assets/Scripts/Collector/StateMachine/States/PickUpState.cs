@@ -21,10 +21,12 @@ public class PickUpState : IState
     
     public void Enter()
     {
-        _inventory.Put(_moverToTarget.Target.GetComponent<IPickable>());
-        _moverToTarget.Target.SetParent(_pickUpPoint);
-        _moverToTarget.Target.localPosition = Vector3.zero;
         _animations.PlayPickUp();
+        
+        var pickable = _moverToTarget.Target.GetComponent<IPickable>();
+        pickable.PickUp(_pickUpPoint);
+        
+        _inventory.Put(pickable);
     }
 
     public void Exit()

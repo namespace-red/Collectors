@@ -6,6 +6,9 @@ public class Inventory
 
     public void Put(IPickable slot)
     {
+        if (_slot != null)
+            throw new StackOverflowException(nameof(_slot));
+        
         _slot = slot ?? throw new StackOverflowException(nameof(slot));
     }
     

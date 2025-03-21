@@ -3,11 +3,12 @@ using UnityEngine;
 
 public interface IPickable
 {
+    public event Action<IPickable> Destroying;
+    
     public Transform Transform
     {
         get;
     }
-    public event Action Picked;
-
-    public void PickUp();
+    
+    public void PickUp(Transform parent);
 }

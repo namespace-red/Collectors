@@ -3,12 +3,18 @@ using UnityEngine;
 
 public class Apple : MonoBehaviour, IPickable
 {
+    public event Action<IPickable> Destroying;
+    
     public Transform Transform => transform;
-    
-    public event Action Picked;
-    
-    public void PickUp()
+
+    public void PickUp(Transform parent)
     {
-        throw new NotImplementedException();
+        Transform.SetParent(parent);
+        Transform.localPosition = Vector3.zero;
+    }
+
+    private void OnDestroy()
+    {
+        Destroying?.Invoke(this);
     }
 }
