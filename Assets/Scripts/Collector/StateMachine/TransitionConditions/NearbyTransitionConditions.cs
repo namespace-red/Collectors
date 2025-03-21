@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class NearbyTransitionConditions : ITransitionCondition
 {
-    private const float Inaccuracy = 1.3f;
-    
+    private readonly float _inaccuracy;
     private readonly Transform _self;
     private Transform _target;
 
@@ -20,14 +19,15 @@ public class NearbyTransitionConditions : ITransitionCondition
         }
     }
 
-    public NearbyTransitionConditions(Transform self)
+    public NearbyTransitionConditions(Transform self, float inaccuracy)
     {
         _self = self ? self : throw new NullReferenceException(nameof(self));
+        _inaccuracy = inaccuracy;
     }
     
     public bool IsDone()
     {
-        return Vector3.Distance(_self.position, _target.position) < Inaccuracy;
+        return Vector3.Distance(_self.position, _target.position) < _inaccuracy;
     }
     
 }

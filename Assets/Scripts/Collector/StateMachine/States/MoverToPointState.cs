@@ -5,6 +5,8 @@ public class MoverToPointState : IState
     private readonly MoverToPoint _moverToPoint;
     private readonly IPosition _position;
 
+    public Action Finished;
+
     public MoverToPointState(MoverToPoint moverToPoint, IPosition position)
     {
         _moverToPoint = moverToPoint ? moverToPoint : throw new NullReferenceException(nameof(moverToPoint));
@@ -20,6 +22,7 @@ public class MoverToPointState : IState
     public void Exit()
     {
         _moverToPoint.enabled = false;
+        Finished?.Invoke();
     }
 
     public void Update()

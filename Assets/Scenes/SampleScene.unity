@@ -511,6 +511,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2878474890984601823, guid: b27577c20548637429c4f1bf105a3235, type: 3}
+      propertyPath: _coolDown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3669586912265212530, guid: b27577c20548637429c4f1bf105a3235, type: 3}
       propertyPath: m_Name
       value: BasePlace
