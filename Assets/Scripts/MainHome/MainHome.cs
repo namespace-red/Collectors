@@ -12,6 +12,19 @@ public class MainHome : MonoBehaviour
     private List<Collector> _collectors = new List<Collector>();
     private List<IPickable> _pickablesInWork = new List<IPickable>();
     private Radar _radar;
+    private int _appleCount;
+
+    public event Action<int> ChangedAppleCount;
+    
+    public int AppleCount
+    {
+        get => _appleCount;
+        private set
+        {
+            _appleCount = value;
+            ChangedAppleCount?.Invoke(_appleCount);
+        }
+    }
 
     private void OnValidate()
     {
@@ -44,6 +57,7 @@ public class MainHome : MonoBehaviour
     private void OnCreatedCollector(Collector collector)
     {
         _collectors.Add(collector);
+        collector.BroughtPickable += OnCollectorBroughtPickable;
     }
 
     private void OnDetectedPickables(List<IPickable> pickables)
@@ -73,5 +87,10 @@ public class MainHome : MonoBehaviour
     {
         pickable.Destroying -= OnDestroyingPickable;
         _pickablesInWork.Remove(pickable);
+    }
+
+    private void OnCollectorBroughtPickable()
+    {
+        AppleCount++;
     }
 }
