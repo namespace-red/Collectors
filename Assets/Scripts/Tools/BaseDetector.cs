@@ -7,7 +7,7 @@ public class BaseDetector<T> : MonoBehaviour
     [SerializeField] private float _radius;
     [SerializeField] private LayerMask _targetLayer;
 
-    public Vector3 Center => transform.position + _offset;
+    public Vector3 Center => transform.position + transform.rotation * _offset;
     
     public float Radius
     {

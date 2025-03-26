@@ -13,9 +13,6 @@ public class PickableCountView : MonoBehaviour
     {
         if (_mainHome == null)
             throw new NullReferenceException(nameof(_mainHome));
-        
-        if (_canvas == null) 
-            throw new NullReferenceException(nameof(_canvas));
     }
 
     private void Awake()

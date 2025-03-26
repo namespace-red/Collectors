@@ -4,6 +4,7 @@ using UnityEngine;
 public class MoverToTarget : BasePhysicsMover
 {
     [SerializeField] private Transform _target;
+    [SerializeField] private Vector3 _offset;
     
     public Transform Target
     {
@@ -16,6 +17,12 @@ public class MoverToTarget : BasePhysicsMover
             _target = value;
         }
     }
+    
+    public Vector3 Offset
+    {
+        get => _offset;
+        set => _offset = value;
+    }
 
-    protected override Vector3 Direction => (_target.position - transform.position).normalized;
+    protected override Vector3 Direction => (_target.position + _target.rotation * Offset - transform.position).normalized;
 }

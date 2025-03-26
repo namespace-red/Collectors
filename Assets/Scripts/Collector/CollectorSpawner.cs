@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollectorSpawner : Spawner<Collector>
 {
     [SerializeField] private PositionInArea _waitArea;
-    [SerializeField] private PositionInPoint _warehousePoint;
+    [SerializeField] private PositionPoint _warehousePoint;
     [SerializeField] private float _secCoolDown;
 
     private Coroutine _coroutine;

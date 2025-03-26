@@ -3,27 +3,25 @@ using UnityEngine;
 
 [RequireComponent(typeof(CollectorAnimations))]
 [RequireComponent(typeof(MoverToTarget))]
-[RequireComponent(typeof(MoverToPoint))]
 public class Collector : MonoBehaviour
 {
     [SerializeField] private Transform _pickUpPoint;
     
     private StateMachine _stateMachine;
-
-    private MoverToPointState _moverToWaitPointState;
-    private MoverToPointState _moverToWarehousePointState;
-    private IdleState _idleState;
+    private MoverToTargetState _moverToWaitPointState;
+    private MoverToTargetState _moverToWarehouseState;
     private MoverToTargetState _moverToTargetState;
+    private IdleState _idleState;
     private PickUpState _pickUpState;
     
-    private NearbyPointTransitionConditions _waitPointNearbyPointTc;
-    private NearbyPointTransitionConditions _warehousePointNearbyPointTc;
+    private NearbyTransitionConditions _waitPointNearbyTc;
+    private NearbyTransitionConditions _warehouseNearbyTc;
+    private NearbyTransitionConditions _targetNearbyTc;
     private FlagTransitionConditions _haveTargetTc;
     private FlagTransitionConditions _pickUpTc;
-    private NearbyTransitionConditions _targetNearbyTc;
     
-    private IPosition _waitArea;
-    private IPosition _warehousePoint;
+    private IPosition _waitPosition;
+    private IPosition _warehousePosition;
     private CollectorAnimations _animations;
     private Inventory _inventory = new Inventory();
 
@@ -41,12 +39,6 @@ public class Collector : MonoBehaviour
         private set;
     }
 
-    public MoverToPoint MoverToWaitPoint
-    {
-        get;
-        private set;
-    }
-
     private void OnValidate()
     {
         if (_pickUpPoint == null)
@@ -56,7 +48,6 @@ public class Collector : MonoBehaviour
     private void Awake()
     {
         MoverToTarget = GetComponent<MoverToTarget>();
-        MoverToWaitPoint = GetComponent<MoverToPoint>();
         _animations = GetComponent<CollectorAnimations>();
     }
 
@@ -72,7 +63,7 @@ public class Collector : MonoBehaviour
 
     private void OnDestroy()
     {
-        _moverToWarehousePointState.Finished -= OnCameToWarehouse;
+        _moverToWarehouseState.Finished -= OnCameToWarehouse;
     }
 
     private void Update()
@@ -85,17 +76,17 @@ public class Collector : MonoBehaviour
         _stateMachine.FixedUpdate();
     }
 
-    public void Init(IPosition waitArea, IPosition warehousePoint)
+    public void Init(IPosition waitPosition, IPosition warehousePosition)
     {
-        _waitArea = waitArea ?? throw new NullReferenceException(nameof(waitArea));
-        _warehousePoint = warehousePoint ?? throw new NullReferenceException(nameof(warehousePoint));
+        _waitPosition = waitPosition ?? throw new NullReferenceException(nameof(waitPosition));
+        _warehousePosition = warehousePosition ?? throw new NullReferenceException(nameof(warehousePosition));
 
         InitStateMachine();
     }
 
     public void SetPickableTarget(IPickable target)
     {
-        MoverToTarget.Target = target.Transform;
+        _moverToTargetState.Target = target.Transform;
         _targetNearbyTc.Target = target.Transform;
 
         _haveTargetTc.Flag = true;
@@ -104,27 +95,27 @@ public class Collector : MonoBehaviour
     
     private void InitStateMachine()
     {
-        _moverToWaitPointState = new MoverToPointState(MoverToWaitPoint, _waitArea);
-        _moverToWarehousePointState = new MoverToPointState(MoverToWaitPoint, _warehousePoint);
-        _idleState = new IdleState();
+        _moverToWaitPointState = new MoverToTargetState(MoverToTarget, _waitPosition);
+        _moverToWarehouseState = new MoverToTargetState(MoverToTarget, _warehousePosition);
         _moverToTargetState = new MoverToTargetState(MoverToTarget);
+        _idleState = new IdleState();
         _pickUpState = new PickUpState(_animations, _pickUpPoint, MoverToTarget, _inventory);
 
-        _moverToWarehousePointState.Finished += OnCameToWarehouse;
+        _moverToWarehouseState.Finished += OnCameToWarehouse;
         
-        _waitPointNearbyPointTc = new NearbyPointTransitionConditions(transform, MoverToWaitPoint.TargetPoint, 0.1f);
-        _warehousePointNearbyPointTc = new NearbyPointTransitionConditions(transform, _warehousePoint.Get(), 0.5f);
+        _waitPointNearbyTc = new NearbyTransitionConditions(transform, _waitPosition, 0.1f);
+        _warehouseNearbyTc = new NearbyTransitionConditions(transform, _warehousePosition, 0.5f);
+        _targetNearbyTc = new NearbyTransitionConditions(transform, 1.3f);
         _haveTargetTc = new FlagTransitionConditions();
         _pickUpTc = new FlagTransitionConditions();
-        _targetNearbyTc = new NearbyTransitionConditions(transform, 1.3f);
         
         _stateMachine = new StateMachine();
-        _stateMachine.AddTransition(_moverToWaitPointState, _idleState, _waitPointNearbyPointTc);
+        _stateMachine.AddTransition(_moverToWaitPointState, _idleState, _waitPointNearbyTc);
         _stateMachine.AddTransition(_moverToWaitPointState, _moverToTargetState, _haveTargetTc);
         _stateMachine.AddTransition(_idleState, _moverToTargetState, _haveTargetTc);
         _stateMachine.AddTransition(_moverToTargetState, _pickUpState, _targetNearbyTc);
-        _stateMachine.AddTransition(_pickUpState, _moverToWarehousePointState, _pickUpTc);
-        _stateMachine.AddTransition(_moverToWarehousePointState, _moverToWaitPointState, _warehousePointNearbyPointTc);
+        _stateMachine.AddTransition(_pickUpState, _moverToWarehouseState, _pickUpTc);
+        _stateMachine.AddTransition(_moverToWarehouseState, _moverToWaitPointState, _warehouseNearbyTc);
         _stateMachine.SetFirstState(_moverToWaitPointState);
     }
 
