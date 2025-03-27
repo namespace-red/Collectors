@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CollectorSpawner : Spawner<Collector>
 {
+    [SerializeField] private float _secCoolDown;
     [SerializeField] private PositionInArea _waitArea;
     [SerializeField] private PositionPoint _warehousePoint;
-    [SerializeField] private float _secCoolDown;
 
     private Coroutine _coroutine;
     private int _sizeOfQueue;
