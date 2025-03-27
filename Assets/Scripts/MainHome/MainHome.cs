@@ -12,17 +12,17 @@ public class MainHome : MonoBehaviour
     private List<Collector> _collectors = new List<Collector>();
     private List<IPickable> _pickablesInWork = new List<IPickable>();
     private Radar _radar;
-    private int _appleCount;
+    private int _pickableCount;
 
     public event Action<int> ChangedAppleCount;
     
-    public int AppleCount
+    public int PickableCount
     {
-        get => _appleCount;
+        get => _pickableCount;
         private set
         {
-            _appleCount = value;
-            ChangedAppleCount?.Invoke(_appleCount);
+            _pickableCount = value;
+            ChangedAppleCount?.Invoke(_pickableCount);
         }
     }
 
@@ -91,6 +91,6 @@ public class MainHome : MonoBehaviour
 
     private void OnCollectorBroughtPickable()
     {
-        AppleCount++;
+        PickableCount++;
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class AppleSpawner : Spawner<Apple>
+public class ResourceSpawner : Spawner<Resource>
 {
     [SerializeField] private float _secCoolDown = .5f;
 

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Apple : MonoBehaviour, IPickable
+public class Resource : MonoBehaviour, IPickable
 {
     public event Action<IPickable> Destroying;
     
