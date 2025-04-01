@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65eef52483074c44a87d5e2113bb8bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 296410185969235420, guid: 621eba487ccba2b4a838d2304326558a, type: 3}
+  _prefab: {fileID: 8204914548191598628, guid: 3be6fb5feba7a5d419cfadeead577ce4, type: 3}
   _parent: {fileID: 6508479119510810391}
   _secCoolDown: 0.5
   _waitArea: {fileID: 8048405796570744794}
