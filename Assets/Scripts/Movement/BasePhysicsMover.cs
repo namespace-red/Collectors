@@ -5,6 +5,8 @@ public abstract class BasePhysicsMover : MonoBehaviour
 {
     [SerializeField] protected float Speed;
     
+    public bool IsRotate { get; set; }
+    
     protected Rigidbody Rigidbody;
 
     protected abstract Vector3 Direction
@@ -19,7 +21,9 @@ public abstract class BasePhysicsMover : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        // Rotate();
+        if (IsRotate)
+            Rotate();
+        
         Move();
     }
 

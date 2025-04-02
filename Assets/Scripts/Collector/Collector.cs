@@ -49,6 +49,8 @@ public class Collector : MonoBehaviour
     {
         MoverToTarget = GetComponent<MoverToTarget>();
         _animations = GetComponent<CollectorAnimations>();
+        
+        MoverToTarget.IsRotate = true;
     }
 
     private void OnEnable()
