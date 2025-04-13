@@ -199,6 +199,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pickUpPoint: {fileID: 6717239659545811575}
+  _inaccuracyTarget: 1.1
+  _inaccuracyWaitPosition: 0.1
+  _inaccuracyWarehouse: 0.1
 --- !u!136 &986292609281736629
 CapsuleCollider:
   m_ObjectHideFlags: 0

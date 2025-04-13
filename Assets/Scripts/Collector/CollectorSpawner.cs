@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class CollectorSpawner : Spawner<Collector>
 {
-    [SerializeField] private float _secCoolDown;
-    [SerializeField] private PositionInArea _waitArea;
-    [SerializeField] private PositionPoint _warehousePoint;
-
+    [SerializeField] private float _secCoolDown = 1f;
+    [SerializeField] private Collider _waitArea;
+    [SerializeField] private Transform _warehouse;
+    
+    private IPosition _warehousePosition;
     private Coroutine _coroutine;
     private int _sizeOfQueue;
 
@@ -20,14 +21,22 @@ public class CollectorSpawner : Spawner<Collector>
         if (_waitArea == null)
             throw new NullReferenceException(nameof(_waitArea));
         
-        if (_warehousePoint == null)
-            throw new NullReferenceException(nameof(_warehousePoint));
+        if (_warehouse == null)
+            throw new NullReferenceException(nameof(_warehouse));
     }
-    
+
+    private void Awake()
+    {
+        _warehousePosition = new PositionPoint(_warehouse);
+    }
+
     public override Collector Get()
     {
         var collector = base.Get();
-        collector.Init(_waitArea, _warehousePoint);
+        
+        var waitPosition = new PositionInArea(_waitArea.transform, _waitArea.bounds);
+        collector.Init(waitPosition, _warehousePosition);
+        
         return collector;
     }
 

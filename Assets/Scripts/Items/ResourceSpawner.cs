@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ResourceSpawner : Spawner<Resource>
+public class ResourceSpawner : AreaSpawner<Resource>
 {
     [SerializeField] private float _secCoolDown = .5f;
 

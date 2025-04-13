@@ -1,32 +1,27 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Collider))]
-public class PositionInArea : MonoBehaviour, IPosition
+public class PositionInArea : IPosition
 {
-    private Collider _collider;
+    private readonly Transform _transform;
+    private readonly Vector3 _offset;
 
-    public Transform Transform => transform;
-
-    public Vector3 Offset
+    public PositionInArea(Transform transform, Bounds bounds)
     {
-        get
-        {
-            var bounds = _collider.bounds;
-            float x = Random.Range(bounds.min.x, bounds.max.x + 1);
-            float z = Random.Range(bounds.min.z, bounds.max.z + 1);
-            float y = bounds.center.y;
+        _transform = transform ? transform : throw new NullReferenceException(nameof(transform));
 
-            return new Vector3(x, y, z) - transform.position;
-        }
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float z = Random.Range(bounds.min.z, bounds.max.z);
+        float y = bounds.center.y;
+        _offset = new Vector3(x, y, z) - _transform.position;
     }
-
-    private void Awake()
-    {
-        _collider = GetComponent<Collider>();
-    }
+    
+    public Transform Transform => _transform;
+    public Vector3 Offset => _offset;
 
     public Vector3 Get()
     {
-        return transform.position + transform.rotation * Offset;
+        return Transform.position + Transform.rotation * Offset;
     }
 }

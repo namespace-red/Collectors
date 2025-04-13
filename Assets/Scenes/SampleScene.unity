@@ -439,7 +439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 546315232542162013, guid: c22ae0f507e9a194abeb60dd8eab427b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 546315232542162013, guid: c22ae0f507e9a194abeb60dd8eab427b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -679,9 +679,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2403362316993557146, guid: b27577c20548637429c4f1bf105a3235, type: 3}
+      propertyPath: _position
+      value: 
+      objectReference: {fileID: 1352940871}
     - target: {fileID: 3669586912265212530, guid: b27577c20548637429c4f1bf105a3235, type: 3}
       propertyPath: m_Name
       value: CollectoresTeam
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836042871664969838, guid: b27577c20548637429c4f1bf105a3235, type: 3}
+      propertyPath: _startCollectorsCount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5786126109796763213, guid: b27577c20548637429c4f1bf105a3235, type: 3}
       propertyPath: m_LocalPosition.x
@@ -766,7 +774,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1236657389}
   - component: {fileID: 1236657388}
-  - component: {fileID: 1236657387}
   - component: {fileID: 1236657386}
   m_Layer: 0
   m_Name: ResourceSpawner
@@ -789,19 +796,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 5483182667446662941, guid: c22ae0f507e9a194abeb60dd8eab427b, type: 3}
   _parent: {fileID: 1236657389}
+  _collider: {fileID: 1236657388}
   _secCoolDown: 3
---- !u!114 &1236657387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236657385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abd1ed3384dd39f4799e2f4e6af5f49b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &1236657388
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -841,6 +837,11 @@ Transform:
   - {fileID: 1617850773}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1352940871 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8655512753865623381, guid: b27577c20548637429c4f1bf105a3235, type: 3}
+  m_PrefabInstance: {fileID: 1215743294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1511598476
 PrefabInstance:
   m_ObjectHideFlags: 0
