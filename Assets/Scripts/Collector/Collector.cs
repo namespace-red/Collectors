@@ -63,9 +63,9 @@ public class Collector : MonoBehaviour
         MoverToTarget.enabled = false;
     }
 
-    private void OnDestroy()
+    private void FixedUpdate()
     {
-        _moverToWarehouseState.Finished -= OnPutInWarehouse;
+        _stateMachine.FixedUpdate();
     }
 
     private void Update()
@@ -73,9 +73,9 @@ public class Collector : MonoBehaviour
         _stateMachine.Update();
     }
 
-    private void FixedUpdate()
+    private void OnDestroy()
     {
-        _stateMachine.FixedUpdate();
+        _putState.Finished -= OnPutInWarehouse;
     }
 
     public void Init(IPosition waitPosition, IPosition warehousePosition)

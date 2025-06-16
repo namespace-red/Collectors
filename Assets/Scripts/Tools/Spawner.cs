@@ -16,7 +16,7 @@ public class Spawner<T> : MonoBehaviour
             _parent = transform;
     }
 
-    public virtual T Get()
+    public virtual T Create()
     {
         return Instantiate(_prefab, transform.position, Quaternion.identity, _parent);
     }

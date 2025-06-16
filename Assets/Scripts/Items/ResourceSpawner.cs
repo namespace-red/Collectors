@@ -25,7 +25,7 @@ public class ResourceSpawner : AreaSpawner<Resource>
         while (enabled)
         {
             yield return wait;
-            Get();
+            Create();
         }
     }
 }

@@ -14,7 +14,7 @@ public class MainHome : MonoBehaviour
     private Radar _radar;
     private int _pickableCount;
 
-    public event Action<int> ChangedAppleCount;
+    public event Action<int> ChangedPickableCount;
     
     public int PickableCount
     {
@@ -22,7 +22,7 @@ public class MainHome : MonoBehaviour
         private set
         {
             _pickableCount = value;
-            ChangedAppleCount?.Invoke(_pickableCount);
+            ChangedPickableCount?.Invoke(_pickableCount);
         }
     }
 

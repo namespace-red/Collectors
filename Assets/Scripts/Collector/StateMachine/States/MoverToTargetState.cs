@@ -9,8 +9,6 @@ public class MoverToTargetState : IState
     private Transform _target;
     private Vector3 _offset;
 
-    public event Action Finished;
-
     public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget)
     {
         _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
@@ -49,7 +47,6 @@ public class MoverToTargetState : IState
     public void Exit()
     {
         _moverToTarget.enabled = false;
-        Finished?.Invoke();
     }
 
     public void Update()

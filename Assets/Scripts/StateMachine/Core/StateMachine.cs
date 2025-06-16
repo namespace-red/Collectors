@@ -2,6 +2,11 @@ public class StateMachine
 {
     private readonly TransitionsController _transitions = new TransitionsController();
     private IState _currentState;
+    
+    public void FixedUpdate()
+    {
+        _currentState.FixedUpdate();
+    }
 
     public void Update()
     {
@@ -13,11 +18,6 @@ public class StateMachine
         _currentState.Update();
     }
 
-    public void FixedUpdate()
-    {
-        _currentState.FixedUpdate();
-    }
-    
     public void SetFirstState(IState state)
     {
         SetState(state);

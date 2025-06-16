@@ -30,9 +30,9 @@ public class CollectorSpawner : Spawner<Collector>
         _warehousePosition = new PositionPoint(_warehouse);
     }
 
-    public override Collector Get()
+    public override Collector Create()
     {
-        var collector = base.Get();
+        var collector = base.Create();
         
         var waitPosition = new PositionInArea(_waitArea.transform, _waitArea.bounds);
         collector.Init(waitPosition, _warehousePosition);
@@ -56,7 +56,7 @@ public class CollectorSpawner : Spawner<Collector>
 
         while (_sizeOfQueue > 0)
         {
-            Created?.Invoke(Get());
+            Created?.Invoke(Create());
             yield return wait;
             _sizeOfQueue--;
         }

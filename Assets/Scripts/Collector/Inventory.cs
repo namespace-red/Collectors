@@ -9,7 +9,7 @@ public class Inventory
         if (_slot != null)
             throw new StackOverflowException(nameof(_slot));
         
-        _slot = slot ?? throw new StackOverflowException(nameof(slot));
+        _slot = slot ?? throw new NullReferenceException(nameof(slot));
     }
     
     public IPickable Take()

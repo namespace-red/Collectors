@@ -23,12 +23,12 @@ public class PickableCountView : MonoBehaviour
 
     private void OnEnable()
     {
-        _mainHome.ChangedAppleCount += SetCount;
+        _mainHome.ChangedPickableCount += SetCount;
     }
 
     private void OnDisable()
     {
-        _mainHome.ChangedAppleCount -= SetCount;
+        _mainHome.ChangedPickableCount -= SetCount;
     }
 
     private void SetCount(int count)

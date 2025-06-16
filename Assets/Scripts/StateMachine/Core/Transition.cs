@@ -9,6 +9,5 @@ public class Transition
     }
         
     public IState NextState { get; }
-    public bool IsReady
-        => _condition.IsDone();
+    public bool IsReady => _condition.IsDone();
 }

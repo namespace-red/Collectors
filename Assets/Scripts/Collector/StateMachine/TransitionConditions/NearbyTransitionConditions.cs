@@ -9,18 +9,6 @@ public class NearbyTransitionConditions : ITransitionCondition
     private Transform _target;
     private Vector3 _offset;
 
-    public Transform Target
-    {
-        get => _target;
-        set
-        {
-            if (value == null)
-                throw new NullReferenceException(nameof(Target));
-
-            _target = value;
-        }
-    }
-
     public NearbyTransitionConditions(Transform self, float inaccuracy)
     {
         _self = self ? self : throw new NullReferenceException(nameof(self));
@@ -34,10 +22,21 @@ public class NearbyTransitionConditions : ITransitionCondition
         _offset = position.Offset;
         _inaccuracy = inaccuracy;
     }
-    
+
+    public Transform Target
+    {
+        get => _target;
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(Target));
+
+            _target = value;
+        }
+    }
+
     public bool IsDone()
     {
         return Vector3.Distance(_self.position, _target.position + _target.rotation * _offset) < _inaccuracy;
     }
-    
 }
