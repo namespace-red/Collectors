@@ -65,7 +65,7 @@ public class MainHome : MonoBehaviour
         foreach (var pickable in pickables)
         {
             if (_pickablesInWork.Contains(pickable))
-                break;
+                continue;
             
             var collector = GetFreeCollector();
         
