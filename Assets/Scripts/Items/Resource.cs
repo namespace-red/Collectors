@@ -13,6 +13,11 @@ public class Resource : MonoBehaviour, IPickable
         Transform.localPosition = Vector3.zero;
     }
 
+    public void Put()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnDestroy()
     {
         Destroying?.Invoke(this);

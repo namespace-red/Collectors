@@ -82,7 +82,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 1, z: 5}
+  m_Size: {x: 5, y: 0.01, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3669586912265212530
 GameObject:
@@ -220,7 +220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 5}
+  m_AnchoredPosition: {x: 0, y: 6}
   m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &198142361551776398
@@ -470,8 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65eef52483074c44a87d5e2113bb8bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 8204914548191598628, guid: 3be6fb5feba7a5d419cfadeead577ce4, type: 3}
-  _position: {fileID: 8655512753865623381}
+  _prefab: {fileID: 3870659159699185756, guid: 3be6fb5feba7a5d419cfadeead577ce4, type: 3}
   _parent: {fileID: 6508479119510810391}
   _secCoolDown: 0.5
   _waitArea: {fileID: 6033514062491083237}
@@ -593,7 +592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3431830774350614479, guid: 86cde5677c8ab3e45884dd46a2bdd2b5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3431830774350614479, guid: 86cde5677c8ab3e45884dd46a2bdd2b5, type: 3}
       propertyPath: m_LocalRotation.w

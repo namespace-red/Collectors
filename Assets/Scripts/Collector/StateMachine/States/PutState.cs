@@ -1,32 +1,30 @@
 using System;
 using UnityEngine;
 
-public class PickUpState : IState
+public class PutState : IState
 {
     private const int AnimationLayer = 0;
-    private const string AnimationName = "PickingUp1";
-    
-    private readonly CollectorAnimations _animations;
-    private readonly Transform _pickUpPoint;
-    private readonly MoverToTarget _moverToTarget;
-    private readonly Inventory _inventory;
+    private const string AnimationName = "Put1";
 
-    public PickUpState(CollectorAnimations animations, Transform pickUpPoint, MoverToTarget moverToTarget,
-        Inventory inventory)
+    private readonly CollectorAnimations _animations;
+    private readonly Inventory _inventory;
+    
+    public event Action Finished;
+
+    public PutState(CollectorAnimations animations, Inventory inventory)
     {
         _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
-        _pickUpPoint = pickUpPoint ? pickUpPoint : throw new NullReferenceException(nameof(pickUpPoint));
-        _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
         _inventory = inventory ?? throw new NullReferenceException(nameof(inventory));
     }
     
     public void Enter()
     {
-        _animations.PlayPickUp1();
+        _animations.PlayPut1();
     }
 
     public void Exit()
     {
+        Finished?.Invoke();
     }
 
     public void Update()
@@ -36,11 +34,8 @@ public class PickUpState : IState
         if (animatorStateInfo.IsName(AnimationName) && animatorStateInfo.normalizedTime >= 1 &&
             _animations.Animator.IsInTransition(AnimationLayer) == false)
         {
-            var pickable = _moverToTarget.Target.GetComponent<IPickable>();
-            pickable.PickUp(_pickUpPoint);
-            _inventory.Put(pickable);
-            
-            _animations.PlayPickUp2();
+            _inventory.Take().Put();
+            _animations.PlayPut2();
         }
     }
 

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MoverToTargetState : IState
 {
+    private readonly CollectorAnimations _animations;
     private readonly MoverToTarget _moverToTarget;
 
     private Transform _target;
@@ -10,13 +11,15 @@ public class MoverToTargetState : IState
 
     public event Action Finished;
 
-    public MoverToTargetState(MoverToTarget moverToTarget)
+    public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget)
     {
+        _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
         _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
     }
 
-    public MoverToTargetState(MoverToTarget moverToTarget, IPosition position)
+    public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget, IPosition position)
     {
+        _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
         _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
         Target = position.Transform;
         _offset = position.Offset;
@@ -36,6 +39,8 @@ public class MoverToTargetState : IState
 
     public void Enter()
     {
+        _animations.PlayRun();
+        
         _moverToTarget.Target = Target;
         _moverToTarget.Offset = _offset;
         _moverToTarget.enabled = true;

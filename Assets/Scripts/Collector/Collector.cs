@@ -5,6 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(MoverToTarget))]
 public class Collector : MonoBehaviour
 {
+    private const int AnimationLayer = 0;
+    private const string PickUpAnimationName = "PickingUp2";
+    private const string PutAnimationName = "Put2";
+    
     [SerializeField] private Transform _pickUpPoint;
     [SerializeField] private float _inaccuracyTarget = 1.1f;
     [SerializeField] private float _inaccuracyWaitPosition = 0.1f;
@@ -16,14 +20,15 @@ public class Collector : MonoBehaviour
     private MoverToTargetState _moverToTargetState;
     private IdleState _idleState;
     private PickUpState _pickUpState;
+    private PutState _putState;
     
     private NearbyTransitionConditions _waitPointNearbyTc;
     private NearbyTransitionConditions _warehouseNearbyTc;
     private NearbyTransitionConditions _targetNearbyTc;
     private FlagTransitionConditions _haveTargetTc;
-    private FlagTransitionConditions _pickUpTc;
-    private AnimatedTransitionConditions _animatedTc;
-    
+    private AnimatedTransitionConditions _animatedPickUpTc;
+    private AnimatedTransitionConditions _animatedPutTc;
+
     private IPosition _waitPosition;
     private IPosition _warehousePosition;
     private CollectorAnimations _animations;
@@ -58,19 +63,9 @@ public class Collector : MonoBehaviour
         MoverToTarget.enabled = false;
     }
 
-    private void OnEnable()
-    {
-        _animations.PickUpComplete += OnPickUpAnimationComplete;
-    }
-
-    private void OnDisable()
-    {
-        _animations.PickUpComplete -= OnPickUpAnimationComplete;
-    }
-
     private void OnDestroy()
     {
-        _moverToWarehouseState.Finished -= OnCameToWarehouse;
+        _moverToWarehouseState.Finished -= OnPutInWarehouse;
     }
 
     private void Update()
@@ -105,38 +100,32 @@ public class Collector : MonoBehaviour
         _moverToWaitPositionState = new MoverToTargetState(_animations, MoverToTarget, _waitPosition);
         _moverToWarehouseState = new MoverToTargetState(_animations, MoverToTarget, _warehousePosition);
         _moverToTargetState = new MoverToTargetState(_animations, MoverToTarget);
-        _idleState = new IdleState();
+        _idleState = new IdleState(_animations);
         _pickUpState = new PickUpState(_animations, _pickUpPoint, MoverToTarget, _inventory);
+        _putState = new PutState(_animations, _inventory);
 
-        _moverToWarehouseState.Finished += OnCameToWarehouse;
+        _putState.Finished += OnPutInWarehouse;
         
         _waitPointNearbyTc = new NearbyTransitionConditions(transform, _waitPosition, _inaccuracyWaitPosition);
         _warehouseNearbyTc = new NearbyTransitionConditions(transform, _warehousePosition, _inaccuracyWarehouse);
         _targetNearbyTc = new NearbyTransitionConditions(transform, _inaccuracyTarget);
         _haveTargetTc = new FlagTransitionConditions();
-        _pickUpTc = new FlagTransitionConditions();
-        // _animatedTc = new AnimatedTransitionConditions(_animation);
+        _animatedPickUpTc = new AnimatedTransitionConditions(_animations.Animator, AnimationLayer, PickUpAnimationName);
+        _animatedPutTc = new AnimatedTransitionConditions(_animations.Animator, AnimationLayer, PutAnimationName);
         
         _stateMachine = new StateMachine();
         _stateMachine.AddTransition(_moverToWaitPositionState, _idleState, _waitPointNearbyTc);
         _stateMachine.AddTransition(_moverToWaitPositionState, _moverToTargetState, _haveTargetTc);
         _stateMachine.AddTransition(_idleState, _moverToTargetState, _haveTargetTc);
         _stateMachine.AddTransition(_moverToTargetState, _pickUpState, _targetNearbyTc);
-        _stateMachine.AddTransition(_pickUpState, _moverToWarehouseState, _pickUpTc);
-        // _stateMachine.AddTransition(_pickUpState, _moverToWarehouseState, _animatedTc);
-        _stateMachine.AddTransition(_moverToWarehouseState, _moverToWaitPositionState, _warehouseNearbyTc);
+        _stateMachine.AddTransition(_pickUpState, _moverToWarehouseState, _animatedPickUpTc);
+        _stateMachine.AddTransition(_moverToWarehouseState, _putState, _warehouseNearbyTc);
+        _stateMachine.AddTransition(_putState, _moverToWaitPositionState, _animatedPutTc);
         _stateMachine.SetFirstState(_moverToWaitPositionState);
     }
 
-    private void OnPickUpAnimationComplete()
+    private void OnPutInWarehouse()
     {
-        _pickUpTc.Flag = true;
-    }
-
-    private void OnCameToWarehouse()
-    {
-        var pickable = _inventory.Take();
-        Destroy(pickable.Transform.gameObject);
         IsBusy = false;
         BroughtPickable?.Invoke();
     }

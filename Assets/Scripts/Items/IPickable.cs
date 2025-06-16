@@ -11,4 +11,5 @@ public interface IPickable
     }
     
     public void PickUp(Transform parent);
+    public void Put();
 }
