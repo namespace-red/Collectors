@@ -11,13 +11,13 @@ public class NearbyTransitionConditions : ITransitionCondition
 
     public NearbyTransitionConditions(Transform self, float inaccuracy)
     {
-        _self = self ? self : throw new NullReferenceException(nameof(self));
+        _self = self ? self : throw new ArgumentNullException(nameof(self));
         _inaccuracy = inaccuracy;
     }
 
     public NearbyTransitionConditions(Transform self, IPosition position, float inaccuracy)
     {
-        _self = self ? self : throw new NullReferenceException(nameof(self));
+        _self = self ? self : throw new ArgumentNullException(nameof(self));
         Target = position.Transform;
         _offset = position.Offset;
         _inaccuracy = inaccuracy;

@@ -13,7 +13,7 @@ public class CollectorAnimations : MonoBehaviour
         private set
         {
             if (value == null)
-                throw new NullReferenceException(nameof(_animator));
+                throw new ArgumentNullException(nameof(_animator));
             
             _animator = value;
         }
@@ -21,7 +21,7 @@ public class CollectorAnimations : MonoBehaviour
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        Animator = GetComponent<Animator>();
     }
 
     public void PlayIdle()

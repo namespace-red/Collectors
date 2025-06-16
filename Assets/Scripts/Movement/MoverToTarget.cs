@@ -12,7 +12,7 @@ public class MoverToTarget : BasePhysicsMover
         set
         {
             if (value == null)
-                throw new NullReferenceException(nameof(value));
+                throw new ArgumentNullException(nameof(value));
             
             _target = value;
         }

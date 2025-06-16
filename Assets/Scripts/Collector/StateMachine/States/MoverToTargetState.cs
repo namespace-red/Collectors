@@ -17,8 +17,8 @@ public class MoverToTargetState : IState
 
     public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget, IPosition position)
     {
-        _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
-        _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
+        _animations = animations ? animations : throw new ArgumentNullException(nameof(animations));
+        _moverToTarget = moverToTarget ? moverToTarget : throw new ArgumentNullException(nameof(moverToTarget));
         Target = position.Transform;
         _offset = position.Offset;
     }

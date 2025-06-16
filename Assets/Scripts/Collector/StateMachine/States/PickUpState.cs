@@ -14,10 +14,10 @@ public class PickUpState : IState
     public PickUpState(CollectorAnimations animations, Transform pickUpPoint, MoverToTarget moverToTarget,
         Inventory inventory)
     {
-        _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
-        _pickUpPoint = pickUpPoint ? pickUpPoint : throw new NullReferenceException(nameof(pickUpPoint));
-        _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
-        _inventory = inventory ?? throw new NullReferenceException(nameof(inventory));
+        _animations = animations ? animations : throw new ArgumentNullException(nameof(animations));
+        _pickUpPoint = pickUpPoint ? pickUpPoint : throw new ArgumentNullException(nameof(pickUpPoint));
+        _moverToTarget = moverToTarget ? moverToTarget : throw new ArgumentNullException(nameof(moverToTarget));
+        _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
     }
     
     public void Enter()

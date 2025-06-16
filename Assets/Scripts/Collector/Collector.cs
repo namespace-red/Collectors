@@ -80,8 +80,8 @@ public class Collector : MonoBehaviour
 
     public void Init(IPosition waitPosition, IPosition warehousePosition)
     {
-        _waitPosition = waitPosition ?? throw new NullReferenceException(nameof(waitPosition));
-        _warehousePosition = warehousePosition ?? throw new NullReferenceException(nameof(warehousePosition));
+        _waitPosition = waitPosition ?? throw new ArgumentNullException(nameof(waitPosition));
+        _warehousePosition = warehousePosition ?? throw new ArgumentNullException(nameof(warehousePosition));
 
         InitStateMachine();
     }

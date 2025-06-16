@@ -7,9 +7,9 @@ public class Inventory
     public void Put(IPickable slot)
     {
         if (_slot != null)
-            throw new StackOverflowException(nameof(_slot));
+            throw new InvalidOperationException(nameof(_slot));
         
-        _slot = slot ?? throw new NullReferenceException(nameof(slot));
+        _slot = slot ?? throw new ArgumentNullException(nameof(slot));
     }
     
     public IPickable Take()

@@ -9,7 +9,7 @@ public class PositionInArea : IPosition
 
     public PositionInArea(Transform transform, Bounds bounds)
     {
-        _transform = transform ? transform : throw new NullReferenceException(nameof(transform));
+        _transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
 
         float x = Random.Range(bounds.min.x, bounds.max.x);
         float z = Random.Range(bounds.min.z, bounds.max.z);

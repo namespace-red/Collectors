@@ -9,7 +9,7 @@ public class AnimatedTransitionConditions : ITransitionCondition
 
     public AnimatedTransitionConditions(Animator animator, int layer, string name)
     {
-        _animator = animator ? animator : throw new NullReferenceException(nameof(animator));
+        _animator = animator ? animator : throw new ArgumentNullException(nameof(animator));
         _name = name;
         _layer = layer;
     }

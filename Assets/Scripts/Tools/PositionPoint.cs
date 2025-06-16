@@ -8,12 +8,12 @@ public class PositionPoint : IPosition
 
     public PositionPoint(Transform transform)
     {
-        _transform = transform ? transform : throw new NullReferenceException(nameof(transform));
+        _transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
     }
     
     public PositionPoint(Transform transform, Vector3 offset)
     {
-        _transform = transform;
+        _transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
         _offset = offset;
     }
     

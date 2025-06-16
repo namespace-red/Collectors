@@ -13,8 +13,8 @@ public class PutState : IState
 
     public PutState(CollectorAnimations animations, Inventory inventory)
     {
-        _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
-        _inventory = inventory ?? throw new NullReferenceException(nameof(inventory));
+        _animations = animations ? animations : throw new ArgumentNullException(nameof(animations));
+        _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
     }
     
     public void Enter()
