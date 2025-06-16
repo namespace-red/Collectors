@@ -25,30 +25,30 @@ public class CollectorAnimations : MonoBehaviour
     }
 
     public void PlayIdle()
-        => _animator.SetTrigger(State.Idle);
+        => _animator.SetTrigger(Params.Idle);
     
     public void PlayRun()
-        => _animator.SetTrigger(State.Run);
+        => _animator.SetTrigger(Params.Run);
     
     public void PlayPickUp1()
-        => _animator.SetTrigger(State.PickUp1);
+        => _animator.SetTrigger(Params.PickUp1);
     
     public void PlayPickUp2()
-        => _animator.SetTrigger(State.PickUp2);
+        => _animator.SetTrigger(Params.PickUp2);
     
     public void PlayPut1()
-        => _animator.SetTrigger(State.Put1);
+        => _animator.SetTrigger(Params.Put1);
     
     public void PlayPut2()
-        => _animator.SetTrigger(State.Put2);
+        => _animator.SetTrigger(Params.Put2);
     
-    private static class State
+    private static class Params
     {
-        public const string Idle = nameof(Idle);
-        public const string Run = nameof(Run);
-        public const string PickUp1 = nameof(PickUp1);
-        public const string PickUp2 = nameof(PickUp2);
-        public const string Put1 = nameof(Put1);
-        public const string Put2 = nameof(Put2);
+        public static readonly int Idle = Animator.StringToHash(nameof(Idle));
+        public static readonly int Run = Animator.StringToHash(nameof(Run));
+        public static readonly int PickUp1 = Animator.StringToHash(nameof(PickUp1));
+        public static readonly int PickUp2 = Animator.StringToHash(nameof(PickUp2));
+        public static readonly int Put1 = Animator.StringToHash(nameof(Put1));
+        public static readonly int Put2 = Animator.StringToHash(nameof(Put2));
     }
 }
