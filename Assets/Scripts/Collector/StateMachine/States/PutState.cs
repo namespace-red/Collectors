@@ -27,6 +27,10 @@ public class PutState : IState
         Finished?.Invoke();
     }
 
+    public void FixedUpdate()
+    {
+    }
+
     public void Update()
     {
         AnimatorStateInfo animatorStateInfo = _animations.Animator.GetCurrentAnimatorStateInfo(AnimationLayer);
@@ -37,9 +41,5 @@ public class PutState : IState
             _inventory.Take().Put();
             _animations.PlayPut2();
         }
-    }
-
-    public void FixedUpdate()
-    {
     }
 }

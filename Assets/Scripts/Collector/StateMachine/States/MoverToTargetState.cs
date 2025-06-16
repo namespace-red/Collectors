@@ -48,12 +48,12 @@ public class MoverToTargetState : IState
     {
         _moverToTarget.enabled = false;
     }
-
-    public void Update()
+    
+    public void FixedUpdate()
     {
     }
 
-    public void FixedUpdate()
+    public void Update()
     {
     }
 }

@@ -29,6 +29,10 @@ public class PickUpState : IState
     {
     }
 
+    public void FixedUpdate()
+    {
+    }
+
     public void Update()
     {
         AnimatorStateInfo animatorStateInfo = _animations.Animator.GetCurrentAnimatorStateInfo(AnimationLayer);
@@ -42,9 +46,5 @@ public class PickUpState : IState
             
             _animations.PlayPickUp2();
         }
-    }
-
-    public void FixedUpdate()
-    {
     }
 }
