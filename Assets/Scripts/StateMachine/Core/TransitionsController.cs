@@ -27,11 +27,8 @@ public class TransitionsController
 
     public Transition TryGetReadyTransition(IState currentState)
     {
-        foreach (var transition in _transitionsFromAnyStates
-            .Where(transition => transition.IsReady && transition.NextState != currentState))
-            return transition;
-
-        return _currentTransitions?.FirstOrDefault(transition => transition.IsReady);
+        return _transitionsFromAnyStates.FirstOrDefault(transition => transition.IsReady && transition.NextState != currentState) ?? 
+               _currentTransitions?.FirstOrDefault(transition => transition.IsReady);
     }
 
     public void SetCurrentState(IState currentState)
