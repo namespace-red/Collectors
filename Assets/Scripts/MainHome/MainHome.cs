@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(Radar))]
 public class MainHome : MonoBehaviour
 {
+    [SerializeField] private PickableInWorldController pickableInWorldController;
     [SerializeField] private CollectorSpawner _collectorSpawner;
-    [SerializeField] private int _startCollectorsCount;
+    [SerializeField, Min(1)] private int _startCollectorsCount;
 
     private List<Collector> _collectors = new List<Collector>();
-    private List<IPickable> _pickablesInWork = new List<IPickable>();
-    private Radar _radar;
     private int _pickableCount;
 
     public event Action<int> ChangedPickableCount;
-    
+
     public int PickableCount
     {
         get => _pickableCount;
@@ -28,13 +26,23 @@ public class MainHome : MonoBehaviour
 
     private void OnValidate()
     {
+        if (pickableInWorldController == null)
+            throw new NullReferenceException(nameof(pickableInWorldController));
+        
         if (_collectorSpawner == null)
             throw new NullReferenceException(nameof(_collectorSpawner));
     }
 
-    private void Awake()
+    private void OnEnable()
     {
-        _radar = GetComponent<Radar>();
+        _collectorSpawner.Created += OnCreatedCollector;
+        pickableInWorldController.DetectedPickables += OnDetectedPickable;
+    }
+
+    private void OnDisable()
+    {
+        _collectorSpawner.Created -= OnCreatedCollector;
+        pickableInWorldController.DetectedPickables -= OnDetectedPickable;
     }
 
     private void Start()
@@ -42,55 +50,45 @@ public class MainHome : MonoBehaviour
         _collectorSpawner.Create(_startCollectorsCount);
     }
 
-    private void OnEnable()
-    {
-        _radar.DetectedPickable += OnDetectedPickables;
-        _collectorSpawner.Created += OnCreatedCollector;
-    }
-
-    private void OnDisable()
-    {
-        _radar.DetectedPickable -= OnDetectedPickables;
-        _collectorSpawner.Created -= OnCreatedCollector;
-    }
-
     private void OnCreatedCollector(Collector collector)
     {
         _collectors.Add(collector);
         collector.BroughtPickable += OnCollectorBroughtPickable;
+        collector.BroughtPickable += RunPickableDetector;
+        RunPickableDetector();
     }
 
-    private void OnDetectedPickables(List<IPickable> pickables)
+    private void OnCollectorBroughtPickable()
     {
-        foreach (var pickable in pickables)
-        {
-            if (_pickablesInWork.Contains(pickable))
-                continue;
-            
-            var collector = GetFreeCollector();
-        
-            if (collector == null)
-                return;
+        PickableCount++;
+    }
 
-            _pickablesInWork.Add(pickable);
-            pickable.Destroying += OnDestroyingPickable;
+    private void RunPickableDetector()
+    {
+        pickableInWorldController.RunDetector();
+    }
+
+    void OnDetectedPickable(IEnumerable<IPickable> detectedPickable)
+    {
+        Collector collector;
+
+        while ((collector = GetFreeCollector()) != null && detectedPickable.Any())
+        {
+            var pickable = detectedPickable.OrderBy(p => 
+                Vector3.Distance(p.Transform.position, collector.transform.position)).First();
+
             collector.SetPickableTarget(pickable);
+            pickableInWorldController.Take(pickable);
+        }
+
+        if (collector == null)
+        {
+            pickableInWorldController.StopDetector();
         }
     }
 
     private Collector GetFreeCollector()
     {
         return _collectors.FirstOrDefault(collector => collector.IsBusy == false);
-    }
-
-    private void OnDestroyingPickable(IPickable pickable)
-    {
-        pickable.Destroying -= OnDestroyingPickable;
-        _pickablesInWork.Remove(pickable);
-    }
-
-    private void OnCollectorBroughtPickable()
-    {
-        PickableCount++;
     }
 }

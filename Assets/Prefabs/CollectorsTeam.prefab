@@ -93,6 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8274802772921824750}
+  - component: {fileID: 3911211212915259087}
   m_Layer: 0
   m_Name: CollectorsTeam
   m_TagString: Untagged
@@ -117,6 +118,20 @@ Transform:
   - {fileID: 6508479119510810391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3911211212915259087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3669586912265212530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d0c966a939f3684ca974c93d861f98a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pickableDetector: {fileID: 2772013845160594846}
+  _secCoolDown: 0.5
 --- !u!1 &5181036233504083172
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +371,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8245995294192576962}
   - component: {fileID: 2772013845160594846}
-  - component: {fileID: 4923391624206905857}
   - component: {fileID: 3836042871664969838}
   m_Layer: 0
   m_Name: MainHome
@@ -399,19 +413,6 @@ MonoBehaviour:
   _targetLayer:
     serializedVersion: 2
     m_Bits: 1
---- !u!114 &4923391624206905857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7849266924219024921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af80ffe6a5307bb4ea3bea72dc04bb00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _coolDown: 0.5
 --- !u!114 &3836042871664969838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0ae333bf07e954780f4567e8241128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickableInWorldController: {fileID: 3911211212915259087}
   _collectorSpawner: {fileID: 2403362316993557146}
   _startCollectorsCount: 3
 --- !u!1 &8051043414264802515
