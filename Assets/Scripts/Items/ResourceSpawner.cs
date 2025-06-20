@@ -3,19 +3,20 @@ using UnityEngine;
 
 public class ResourceSpawner : AreaSpawner<Resource>
 {
-    [SerializeField] private float _secCoolDown = .5f;
+    [SerializeField, Min(0.01f)] private float _secCoolDown;
+    [SerializeField, Min(1)] private int _startCount;
 
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        
-        if (_secCoolDown < 0)
-            _secCoolDown = 0;
-    }
-    
     private void OnEnable()
     {
         StartCoroutine(StartCreating());
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < _startCount - 1; i++) //_startCount - 1 тк в корутине уже 1 создался
+        {
+            Create();
+        }
     }
 
     private IEnumerator StartCreating()
@@ -24,8 +25,8 @@ public class ResourceSpawner : AreaSpawner<Resource>
 
         while (enabled)
         {
-            yield return wait;
             Create();
+            yield return wait;
         }
     }
 }
