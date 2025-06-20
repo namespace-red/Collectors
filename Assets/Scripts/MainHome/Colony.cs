@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MainHome : MonoBehaviour
+public class Colony : MonoBehaviour
 {
     [SerializeField] private PickableInWorldController pickableInWorldController;
     [SerializeField] private CollectorSpawner _collectorSpawner;
@@ -26,9 +26,6 @@ public class MainHome : MonoBehaviour
 
     private void OnValidate()
     {
-        if (pickableInWorldController == null)
-            throw new NullReferenceException(nameof(pickableInWorldController));
-        
         if (_collectorSpawner == null)
             throw new NullReferenceException(nameof(_collectorSpawner));
     }
