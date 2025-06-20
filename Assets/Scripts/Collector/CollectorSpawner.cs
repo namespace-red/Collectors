@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CollectorSpawner : Spawner<Collector>
 {
-    [SerializeField] private float _secCoolDown = 1f;
+    [SerializeField, Min(0.1f)] private float _secCoolDown;
     [SerializeField] private Collider _waitArea;
     [SerializeField] private Transform _warehouse;
     
