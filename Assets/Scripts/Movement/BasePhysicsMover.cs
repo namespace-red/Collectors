@@ -9,11 +9,6 @@ public abstract class BasePhysicsMover : MonoBehaviour
     
     protected Rigidbody Rigidbody;
 
-    protected abstract Vector3 Direction
-    {
-        get;
-    }
-
     protected virtual void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
@@ -27,14 +22,16 @@ public abstract class BasePhysicsMover : MonoBehaviour
         Move();
     }
 
+    protected abstract Vector3 Direction();
+
     private void Rotate()
     {
-        transform.forward = Direction;
+        transform.forward = Direction();
     }
 
     private void Move()
     {
-        Vector3 step = Direction * (Speed * Time.fixedDeltaTime);
+        Vector3 step = Direction() * (Speed * Time.fixedDeltaTime);
         Rigidbody.MovePosition(transform.position + step);
     }
 }
