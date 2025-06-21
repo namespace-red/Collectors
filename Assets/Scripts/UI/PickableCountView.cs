@@ -5,7 +5,6 @@ using UnityEngine;
 public class PickableCountView : MonoBehaviour
 {
     [SerializeField] private ResourceWarehouse _resourceWarehouse;
-    [SerializeField] private Canvas _canvas;
     
     private TMP_Text _text;
 
@@ -18,7 +17,6 @@ public class PickableCountView : MonoBehaviour
     private void Awake()
     {
         _text = GetComponent<TMP_Text>();
-        transform.SetParent(_canvas.transform);
     }
 
     private void OnEnable()
