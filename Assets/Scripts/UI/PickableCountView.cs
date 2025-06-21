@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PickableCountView : MonoBehaviour
 {
-    [SerializeField] private Colony colony;
+    [SerializeField] private ResourceWarehouse _resourceWarehouse;
     [SerializeField] private Canvas _canvas;
     
     private TMP_Text _text;
 
     private void OnValidate()
     {
-        if (colony == null)
-            throw new NullReferenceException(nameof(colony));
+        if (_resourceWarehouse == null)
+            throw new NullReferenceException(nameof(_resourceWarehouse));
     }
 
     private void Awake()
@@ -23,12 +23,12 @@ public class PickableCountView : MonoBehaviour
 
     private void OnEnable()
     {
-        colony.ChangedPickableCount += SetCount;
+        _resourceWarehouse.ChangedCount += SetCount;
     }
 
     private void OnDisable()
     {
-        colony.ChangedPickableCount -= SetCount;
+        _resourceWarehouse.ChangedCount -= SetCount;
     }
 
     private void SetCount(int count)

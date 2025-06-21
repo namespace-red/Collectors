@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 485072195888475642}
   - component: {fileID: 3781167395426417899}
+  - component: {fileID: 988853930918399638}
   m_Layer: 0
   m_Name: Colony
   m_TagString: Untagged
@@ -51,6 +52,18 @@ MonoBehaviour:
   pickableInWorldController: {fileID: 0}
   _collectorSpawner: {fileID: 8623642143017179437}
   _startCollectorsCount: 3
+--- !u!114 &988853930918399638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229936371173762899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f8cd019627828540b536b37e45b390d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2196279790921521241
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff7739b527fff54fa60e659d2328595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colony: {fileID: 3781167395426417899}
+  _resourceWarehouse: {fileID: 988853930918399638}
   _canvas: {fileID: 0}
 --- !u!1 &8211039512322468206
 GameObject:

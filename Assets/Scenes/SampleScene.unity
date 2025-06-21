@@ -631,6 +631,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 988853930918399638, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+      propertyPath: _count
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1229936371173762899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: m_Name
       value: Colony

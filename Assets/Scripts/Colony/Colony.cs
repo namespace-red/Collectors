@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(ResourceWarehouse))]
 public class Colony : MonoBehaviour
 {
     [SerializeField] private PickableInWorldController pickableInWorldController;
@@ -10,24 +11,18 @@ public class Colony : MonoBehaviour
     [SerializeField, Min(1)] private int _startCollectorsCount;
 
     private List<Collector> _collectors = new List<Collector>();
-    private int _pickableCount;
 
-    public event Action<int> ChangedPickableCount;
-
-    public int PickableCount
-    {
-        get => _pickableCount;
-        private set
-        {
-            _pickableCount = value;
-            ChangedPickableCount?.Invoke(_pickableCount);
-        }
-    }
+    public ResourceWarehouse ResourceWarehouse { get; private set; }
 
     private void OnValidate()
     {
         if (_collectorSpawner == null)
             throw new NullReferenceException(nameof(_collectorSpawner));
+    }
+
+    private void Awake()
+    {
+        ResourceWarehouse = GetComponent<ResourceWarehouse>();
     }
 
     private void OnEnable()
@@ -57,7 +52,7 @@ public class Colony : MonoBehaviour
 
     private void OnCollectorBroughtPickable()
     {
-        PickableCount++;
+        ResourceWarehouse.Add(1);
     }
 
     private void RunPickableDetector()
