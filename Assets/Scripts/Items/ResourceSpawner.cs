@@ -19,6 +19,19 @@ public class ResourceSpawner : AreaSpawner<Resource>
         }
     }
 
+    public override Resource Create()
+    {
+        var resource = base.Create();
+        resource.PutPickable += DestroyResource;
+        return resource;
+    }
+
+    private void DestroyResource(IPickable pickable)
+    {
+        pickable.PutPickable += DestroyResource;
+        Destroy(pickable.Transform.gameObject);
+    }
+
     private IEnumerator StartCreating()
     {
         var wait = new WaitForSeconds(_secCoolDown);

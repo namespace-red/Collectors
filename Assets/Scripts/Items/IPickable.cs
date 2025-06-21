@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IPickable
 {
-    public event Action<IPickable> Destroying;
+    public event Action<IPickable> PutPickable;
     
     public Transform Transform
     {

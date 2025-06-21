@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour, IPickable
 {
-    public event Action<IPickable> Destroying;
+    public event Action<IPickable> PutPickable;
     
     public Transform Transform => transform;
 
@@ -15,11 +15,6 @@ public class Resource : MonoBehaviour, IPickable
 
     public void Put()
     {
-        Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        Destroying?.Invoke(this);
+        PutPickable?.Invoke(this);
     }
 }

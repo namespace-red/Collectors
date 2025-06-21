@@ -27,7 +27,7 @@ public class PickableInWorldController : MonoBehaviour
     {
         _freePickable.Remove(pickable);
         _pickableInWork.Add(pickable);
-        pickable.Destroying += OnDestroyingPickable;
+        pickable.PutPickable += OnPutPickable;
     }
     
     private IEnumerator RunDetecting()
@@ -49,9 +49,9 @@ public class PickableInWorldController : MonoBehaviour
         }
     }
     
-    private void OnDestroyingPickable(IPickable pickable)
+    private void OnPutPickable(IPickable pickable)
     {
-        pickable.Destroying -= OnDestroyingPickable;
+        pickable.PutPickable -= OnPutPickable;
         _pickableInWork.Remove(pickable);
     }
 }
