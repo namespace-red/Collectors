@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class StateMachine
 {
     private readonly TransitionsController _transitions = new TransitionsController();
@@ -39,6 +41,7 @@ public class StateMachine
     {
         _currentState?.Exit();
 
+        Debug.Log("State " + newState);
         _currentState = newState;
         _transitions.SetCurrentState(_currentState);
         _currentState.Enter();

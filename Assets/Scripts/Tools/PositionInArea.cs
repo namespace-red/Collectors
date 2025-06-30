@@ -17,8 +17,17 @@ public class PositionInArea : IPosition
         _offset = new Vector3(x, y, z) - _transform.position;
     }
     
-    public Transform Transform => _transform;
-    public Vector3 Offset => _offset;
+    public Transform Transform
+    {
+        get => _transform;
+        set => throw new NotImplementedException();
+    }
+
+    public Vector3 Offset
+    {
+        get => _offset;
+        set => throw new NotImplementedException();
+    }
 
     public Vector3 Get()
     {

@@ -45,8 +45,8 @@ public class Colony : MonoBehaviour
     private void OnCreatedCollector(Collector collector)
     {
         _collectors.Add(collector);
-        collector.BroughtPickable += OnCollectorBroughtPickable;
-        collector.BroughtPickable += RunPickableDetector;
+        collector.PutPickable += OnCollectorBroughtPickable;
+        collector.PutPickable += RunPickableDetector;
         RunPickableDetector();
     }
 
@@ -69,6 +69,7 @@ public class Colony : MonoBehaviour
             var pickable = detectedPickable.OrderBy(p => 
                 Vector3.Distance(p.Transform.position, collector.transform.position)).First();
 
+            Debug.Log("free pickable " + pickable.Transform.position);
             collector.SetPickableTarget(pickable);
             pickableInWorldController.Take(pickable);
         }

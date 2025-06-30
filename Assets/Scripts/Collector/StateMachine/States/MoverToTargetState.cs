@@ -5,42 +5,23 @@ public class MoverToTargetState : IState
 {
     private readonly CollectorAnimations _animations;
     private readonly MoverToTarget _moverToTarget;
+    private  IPosition _target;
 
-    private Transform _target;
-    private Vector3 _offset;
-
-    public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget)
-    {
-        _animations = animations ? animations : throw new NullReferenceException(nameof(animations));
-        _moverToTarget = moverToTarget ? moverToTarget : throw new NullReferenceException(nameof(moverToTarget));
-    }
-
-    public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget, IPosition position)
+    public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget, IPosition target)
     {
         _animations = animations ? animations : throw new ArgumentNullException(nameof(animations));
         _moverToTarget = moverToTarget ? moverToTarget : throw new ArgumentNullException(nameof(moverToTarget));
-        Target = position.Transform;
-        _offset = position.Offset;
+        _target = target ?? throw new ArgumentNullException(nameof(target));
     }
-    
-    public Transform Target
-    {
-        get => _target;
-        set
-        {
-            if (value == null)
-                throw new NullReferenceException(nameof(value));
-            
-            _target = value;
-        }
-    }
-
+   
     public void Enter()
     {
         _animations.PlayRun();
         
-        _moverToTarget.Target = Target;
-        _moverToTarget.Offset = _offset;
+        Debug.Log("Enter "  + _target.Offset + _target.Get());
+        Debug.Log("_moverToTarget " + _moverToTarget);
+        _moverToTarget.Target = _target.Transform;
+        _moverToTarget.Offset = _target.Offset;
         _moverToTarget.enabled = true;
     }
 

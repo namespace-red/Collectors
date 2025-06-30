@@ -3,25 +3,55 @@ using UnityEngine;
 
 public class PositionPoint : IPosition
 {
-    private readonly Transform _transform;
-    private readonly Vector3 _offset;
+    private Transform _transform;
+    private Vector3 _offset;
+
+    public PositionPoint()
+    { }
 
     public PositionPoint(Transform transform)
     {
-        _transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
+        Transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
     }
     
     public PositionPoint(Transform transform, Vector3 offset)
     {
-        _transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
-        _offset = offset;
+        Transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
+        Offset = offset;
     }
     
-    public Transform Transform => _transform;
-    public Vector3 Offset => _offset;
+    public Transform Transform
+    {
+        get
+        {
+            Debug.Log("Transform get " + _transform);
+            return _transform;
+        }
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(value));
+            
+            Debug.Log("Transform set " + value);
+            _transform = value;
+        }
+    }
+
+    public Vector3 Offset
+    {
+        get => _offset;
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(value));
+            
+            _offset = value;
+        }
+    }
 
     public Vector3 Get()
     {
+        Debug.Log("Get " + Transform.name);
         return Transform.position + Transform.rotation * Offset;
     }
 }

@@ -1,15 +1,24 @@
+using UnityEngine;
+
 public class FlagTransitionConditions : ITransitionCondition
 {
-    public bool Flag;
-    
+    private bool _flag;
+
     public bool IsDone()
     {
-        if (Flag)
+        Debug.Log("_flag " + _flag);
+        if (_flag)
         {
-            Flag = false;
+            _flag = false;
             return true;
         }
         
-        return Flag;
+        return _flag;
+    }
+
+    public void SetTrueFlag()
+    {
+        Debug.Log("set _flag " );
+        _flag = true;
     }
 }

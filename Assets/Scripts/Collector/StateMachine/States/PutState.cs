@@ -9,7 +9,7 @@ public class PutState : IState
     private readonly CollectorAnimations _animations;
     private readonly Inventory _inventory;
     
-    public event Action Finished;
+    public event Action PutPickable;
 
     public PutState(CollectorAnimations animations, Inventory inventory)
     {
@@ -24,7 +24,6 @@ public class PutState : IState
 
     public void Exit()
     {
-        Finished?.Invoke();
     }
 
     public void FixedUpdate()
@@ -40,6 +39,8 @@ public class PutState : IState
         {
             _inventory.Take().Put();
             _animations.PlayPut2();
+            
+            PutPickable?.Invoke();
         }
     }
 }

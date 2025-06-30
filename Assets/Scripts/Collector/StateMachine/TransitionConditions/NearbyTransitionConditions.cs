@@ -5,38 +5,17 @@ public class NearbyTransitionConditions : ITransitionCondition
 {
     private readonly float _inaccuracy;
     private readonly Transform _self;
-    
-    private Transform _target;
-    private Vector3 _offset;
+    private readonly IPosition _target;
 
-    public NearbyTransitionConditions(Transform self, float inaccuracy)
+    public NearbyTransitionConditions(Transform self, IPosition target, float inaccuracy)
     {
         _self = self ? self : throw new ArgumentNullException(nameof(self));
+        _target = target ?? throw new ArgumentNullException(nameof(target));
         _inaccuracy = inaccuracy;
-    }
-
-    public NearbyTransitionConditions(Transform self, IPosition position, float inaccuracy)
-    {
-        _self = self ? self : throw new ArgumentNullException(nameof(self));
-        Target = position.Transform;
-        _offset = position.Offset;
-        _inaccuracy = inaccuracy;
-    }
-
-    public Transform Target
-    {
-        get => _target;
-        set
-        {
-            if (value == null)
-                throw new NullReferenceException(nameof(Target));
-
-            _target = value;
-        }
     }
 
     public bool IsDone()
     {
-        return Vector3.Distance(_self.position, _target.position + _target.rotation * _offset) < _inaccuracy;
+        return Vector3.Distance(_self.position, _target.Get()) < _inaccuracy;
     }
 }

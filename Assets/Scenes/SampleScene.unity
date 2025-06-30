@@ -539,6 +539,10 @@ PrefabInstance:
       value: Colony
       objectReference: {fileID: 0}
     - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+      propertyPath: _startCollectorsCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: pickableInWorldController
       value: 
       objectReference: {fileID: 127602363}
@@ -681,7 +685,7 @@ MonoBehaviour:
   _parent: {fileID: 1236657389}
   _collider: {fileID: 1236657388}
   _secCoolDown: 5
-  _startCount: 15
+  _startCount: 1
 --- !u!65 &1236657388
 BoxCollider:
   m_ObjectHideFlags: 0
