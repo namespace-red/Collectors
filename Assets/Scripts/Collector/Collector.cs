@@ -70,7 +70,6 @@ public class Collector : MonoBehaviour
     public void SetPickableTarget(IPickable target)
     {
         IsBusy = true;
-        Debug.Log("SetPickableTarget " + target.Transform);
         _targetPosition.Transform = target.Transform;
         _haveTargetTc.SetTrueFlag();
     }
@@ -95,7 +94,7 @@ public class Collector : MonoBehaviour
         
         _stateMachine = new StateMachine();
         _stateMachine.AddTransition(moverToWaitPositionState, idleState, waitPointNearbyTc);
-        // _stateMachine.AddTransition(moverToWaitPositionState, moverToTargetState, _haveTargetTc);
+        _stateMachine.AddTransition(moverToWaitPositionState, moverToTargetState, _haveTargetTc);
         _stateMachine.AddTransition(idleState, moverToTargetState, _haveTargetTc);
         _stateMachine.AddTransition(moverToTargetState, pickUpState, targetNearbyTc);
         _stateMachine.AddTransition(pickUpState, moverToWarehouseState, animatedPickUpTc);

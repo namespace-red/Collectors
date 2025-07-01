@@ -22,17 +22,12 @@ public class PositionPoint : IPosition
     
     public Transform Transform
     {
-        get
-        {
-            Debug.Log("Transform get " + _transform);
-            return _transform;
-        }
+        get => _transform;
         set
         {
             if (value == null)
                 throw new NullReferenceException(nameof(value));
             
-            Debug.Log("Transform set " + value);
             _transform = value;
         }
     }
@@ -51,7 +46,6 @@ public class PositionPoint : IPosition
 
     public Vector3 Get()
     {
-        Debug.Log("Get " + Transform.name);
         return Transform.position + Transform.rotation * Offset;
     }
 }

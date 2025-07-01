@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class MoverToTargetState : IState
 {
@@ -18,8 +17,6 @@ public class MoverToTargetState : IState
     {
         _animations.PlayRun();
         
-        Debug.Log("Enter "  + _target.Offset + _target.Get());
-        Debug.Log("_moverToTarget " + _moverToTarget);
         _moverToTarget.Target = _target.Transform;
         _moverToTarget.Offset = _target.Offset;
         _moverToTarget.enabled = true;

@@ -15,6 +15,7 @@ public class Resource : MonoBehaviour, IPickable
 
     public void Put()
     {
+        gameObject.SetActive(false);
         PutPickable?.Invoke(this);
     }
 }

@@ -28,7 +28,7 @@ public class ResourceSpawner : AreaSpawner<Resource>
 
     private void DestroyResource(IPickable pickable)
     {
-        pickable.PutPickable += DestroyResource;
+        pickable.PutPickable -= DestroyResource;
         Destroy(pickable.Transform.gameObject);
     }
 

@@ -486,10 +486,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 127602364}
     m_Modifications:
-    - target: {fileID: 177086731801094161, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
-      propertyPath: _canvas
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 485072195888475642, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20
@@ -530,17 +526,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 988853930918399638, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
-      propertyPath: _count
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1229936371173762899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: m_Name
       value: Colony
-      objectReference: {fileID: 0}
-    - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
-      propertyPath: _startCollectorsCount
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: pickableInWorldController
@@ -685,7 +673,7 @@ MonoBehaviour:
   _parent: {fileID: 1236657389}
   _collider: {fileID: 1236657388}
   _secCoolDown: 5
-  _startCount: 1
+  _startCount: 15
 --- !u!65 &1236657388
 BoxCollider:
   m_ObjectHideFlags: 0

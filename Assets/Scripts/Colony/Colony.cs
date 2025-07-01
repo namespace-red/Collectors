@@ -69,7 +69,6 @@ public class Colony : MonoBehaviour
             var pickable = detectedPickable.OrderBy(p => 
                 Vector3.Distance(p.Transform.position, collector.transform.position)).First();
 
-            Debug.Log("free pickable " + pickable.Transform.position);
             collector.SetPickableTarget(pickable);
             pickableInWorldController.Take(pickable);
         }
