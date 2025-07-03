@@ -123,17 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &127602363 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3911211212915259087, guid: b27577c20548637429c4f1bf105a3235, type: 3}
-  m_PrefabInstance: {fileID: 1215743294}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d0c966a939f3684ca974c93d861f98a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &127602364 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8274802772921824750, guid: b27577c20548637429c4f1bf105a3235, type: 3}
@@ -249,6 +238,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258885055}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &544522855 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8279050715435056293, guid: b27577c20548637429c4f1bf105a3235, type: 3}
+  m_PrefabInstance: {fileID: 1215743294}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c81ca6844dff0d42bf6d4c62cf38645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,9 +531,13 @@ PrefabInstance:
       value: Colony
       objectReference: {fileID: 0}
     - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+      propertyPath: _radar
+      value: 
+      objectReference: {fileID: 544522855}
+    - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: pickableInWorldController
       value: 
-      objectReference: {fileID: 127602363}
+      objectReference: {fileID: 0}
     - target: {fileID: 8623642143017179437, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: _parent
       value: 
@@ -631,6 +635,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8279050715435056293, guid: b27577c20548637429c4f1bf105a3235, type: 3}
+      propertyPath: _pickableDetector
+      value: 
+      objectReference: {fileID: 975828484}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(ResourceWarehouse))]
 public class Colony : MonoBehaviour
 {
-    [SerializeField] private PickableInWorldController pickableInWorldController;
+    [SerializeField] private Radar _radar;
     [SerializeField] private CollectorSpawner _collectorSpawner;
     [SerializeField, Min(1)] private int _startCollectorsCount;
 
@@ -28,13 +28,13 @@ public class Colony : MonoBehaviour
     private void OnEnable()
     {
         _collectorSpawner.Created += OnCreatedCollector;
-        pickableInWorldController.DetectedPickables += OnDetectedPickable;
+        _radar.DetectedPickables += OnDetectedPickable;
     }
 
     private void OnDisable()
     {
         _collectorSpawner.Created -= OnCreatedCollector;
-        pickableInWorldController.DetectedPickables -= OnDetectedPickable;
+        _radar.DetectedPickables -= OnDetectedPickable;
     }
 
     private void Start()
@@ -46,7 +46,7 @@ public class Colony : MonoBehaviour
     {
         _collectors.Add(collector);
         collector.PutPickable += OnCollectorBroughtPickable;
-        RunPickableDetector();
+        RunRadar();
     }
 
     private void OnCollectorBroughtPickable(IPickable pickable)
@@ -60,38 +60,32 @@ public class Colony : MonoBehaviour
                 throw new NotSupportedException(nameof(pickable));
         }
 
-        RunPickableDetector();
+        RunRadar();
     }
 
-    private void RunPickableDetector()
+    private void RunRadar()
     {
-        pickableInWorldController.RunDetector();
+        _radar.Run();
     }
 
-    private void OnDetectedPickable(IEnumerable<IPickable> detectedPickable)
+    private void OnDetectedPickable()
     {
-        Collector collector = GetFreeCollector();
-
-        while (collector != null && detectedPickable.Any())
+        while (HaveFreeCollector() && _radar.HaveFreePickable)
         {
-            var pickable = detectedPickable.
-                OrderBy(p => p.Transform.position.SqrDistance(collector.transform.position)).
-                First();
-
+            Collector collector = GetFreeCollector();
+            var pickable = _radar.TakeNearestPickable(collector.transform.position);
             collector.SetPickableTarget(pickable);
-            pickableInWorldController.Take(pickable);
-            
-            collector = GetFreeCollector();
         }
 
-        if (collector == null)
+        if (HaveFreeCollector() == false)
         {
-            pickableInWorldController.StopDetector();
+            _radar.Stop();
         }
     }
 
-    private Collector GetFreeCollector()
-    {
-        return _collectors.FirstOrDefault(collector => collector.IsBusy == false);
-    }
+    private bool HaveFreeCollector()
+        => _collectors.Any(collector => collector.IsBusy == false);
+    
+    private Collector GetFreeCollector() 
+        => _collectors.FirstOrDefault(collector => collector.IsBusy == false);
 }

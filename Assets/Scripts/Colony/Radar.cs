@@ -4,32 +4,36 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PickableInWorldController : MonoBehaviour
+public class Radar : MonoBehaviour
 {
     [SerializeField] private PickableDetector _pickableDetector;
     [SerializeField, Min(0.1f)] private float _secCoolDown;
     
     private List<IPickable> _pickableInWork = new List<IPickable>();
     private HashSet<IPickable> _freePickable = new HashSet<IPickable>();
-    
-    public event Action<IEnumerable<IPickable>> DetectedPickables;
+
+    public event Action DetectedPickables;
+
+    public bool HaveFreePickable => _freePickable.Count > 0;
     
     private void OnEnable()
     {
         StartCoroutine(RunDetecting());
     }
+    
+    public void Run() => enabled = true;
 
-    public void RunDetector() => enabled = true;
+    public void Stop() => enabled = false;
 
-    public void StopDetector() => enabled = false;
-
-    public void Take(IPickable pickable)
+    public IPickable TakeNearestPickable(Vector3 position)
     {
+        var pickable = _freePickable.OrderBy(pickable => pickable.Transform.position.SqrDistance(position)).First();
         _freePickable.Remove(pickable);
         _pickableInWork.Add(pickable);
         pickable.PutPickable += OnPutPickable;
+        return pickable;
     }
-    
+
     private IEnumerator RunDetecting()
     {
         var coolDown = new WaitForSeconds(_secCoolDown);
@@ -42,13 +46,13 @@ public class PickableInWorldController : MonoBehaviour
             {
                 detectedPickable.ExceptWith(_pickableInWork);
                 _freePickable.UnionWith(detectedPickable);
-                DetectedPickables?.Invoke(_freePickable);
+                DetectedPickables?.Invoke();
             }
 
             yield return coolDown;
         }
     }
-    
+
     private void OnPutPickable(IPickable pickable)
     {
         pickable.PutPickable -= OnPutPickable;
