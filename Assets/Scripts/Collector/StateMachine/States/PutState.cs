@@ -9,7 +9,7 @@ public class PutState : IState
     private readonly CollectorAnimations _animations;
     private readonly Inventory _inventory;
     
-    public event Action PutPickable;
+    public event Action<IPickable> PutPickable;
 
     public PutState(CollectorAnimations animations, Inventory inventory)
     {
@@ -37,10 +37,11 @@ public class PutState : IState
         if (animatorStateInfo.IsName(AnimationName) && animatorStateInfo.normalizedTime >= 1 &&
             _animations.Animator.IsInTransition(AnimationLayer) == false)
         {
-            _inventory.Take().Put();
+            var pickable = _inventory.Take();
+            pickable.Put();
             _animations.PlayPut2();
             
-            PutPickable?.Invoke();
+            PutPickable?.Invoke(pickable);
         }
     }
 }

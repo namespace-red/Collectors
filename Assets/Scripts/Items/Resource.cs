@@ -6,6 +6,7 @@ public class Resource : MonoBehaviour, IPickable
     public event Action<IPickable> PutPickable;
     
     public Transform Transform => transform;
+    public int Value => 1; 
 
     public void PickUp(Transform parent)
     {

@@ -25,7 +25,7 @@ public class Collector : MonoBehaviour
     private MoverToTarget _moverToTarget;
     private Inventory _inventory = new Inventory();
 
-    public event Action PutPickable;
+    public event Action<IPickable> PutPickable;
     
     public bool IsBusy { get; private set; }
 
@@ -103,9 +103,9 @@ public class Collector : MonoBehaviour
         _stateMachine.SetFirstState(moverToWaitPositionState);
     }
 
-    private void OnPutPickableInWarehouse()
+    private void OnPutPickableInWarehouse(IPickable pickable)
     {
         IsBusy = false;
-        PutPickable?.Invoke();
+        PutPickable?.Invoke(pickable);
     }
 }

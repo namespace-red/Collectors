@@ -22,16 +22,16 @@ public abstract class BasePhysicsMover : MonoBehaviour
         Move();
     }
 
-    protected abstract Vector3 Direction();
+    protected abstract Vector3 GetDirection();
 
     private void Rotate()
     {
-        transform.forward = Direction();
+        transform.forward = GetDirection();
     }
 
     private void Move()
     {
-        Vector3 step = Direction() * (Speed * Time.fixedDeltaTime);
+        Vector3 step = GetDirection() * (Speed * Time.fixedDeltaTime);
         Rigidbody.MovePosition(transform.position + step);
     }
 }

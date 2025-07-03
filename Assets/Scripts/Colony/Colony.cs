@@ -46,13 +46,21 @@ public class Colony : MonoBehaviour
     {
         _collectors.Add(collector);
         collector.PutPickable += OnCollectorBroughtPickable;
-        collector.PutPickable += RunPickableDetector;
         RunPickableDetector();
     }
 
-    private void OnCollectorBroughtPickable()
+    private void OnCollectorBroughtPickable(IPickable pickable)
     {
-        ResourceWarehouse.Add(1);
+        switch (pickable)
+        {
+            case Resource resource:
+                ResourceWarehouse.Add(resource.Value);
+                break;
+            default:
+                throw new NotSupportedException(nameof(pickable));
+        }
+
+        RunPickableDetector();
     }
 
     private void RunPickableDetector()
@@ -60,17 +68,20 @@ public class Colony : MonoBehaviour
         pickableInWorldController.RunDetector();
     }
 
-    void OnDetectedPickable(IEnumerable<IPickable> detectedPickable)
+    private void OnDetectedPickable(IEnumerable<IPickable> detectedPickable)
     {
-        Collector collector;
+        Collector collector = GetFreeCollector();
 
-        while ((collector = GetFreeCollector()) != null && detectedPickable.Any())
+        while (collector != null && detectedPickable.Any())
         {
-            var pickable = detectedPickable.OrderBy(p => 
-                Vector3.Distance(p.Transform.position, collector.transform.position)).First();
+            var pickable = detectedPickable.
+                OrderBy(p => p.Transform.position.SqrDistance(collector.transform.position)).
+                First();
 
             collector.SetPickableTarget(pickable);
             pickableInWorldController.Take(pickable);
+            
+            collector = GetFreeCollector();
         }
 
         if (collector == null)

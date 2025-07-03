@@ -16,6 +16,6 @@ public class NearbyTransitionConditions : ITransitionCondition
 
     public bool IsDone()
     {
-        return Vector3.Distance(_self.position, _target.Get()) < _inaccuracy;
+        return _self.position.IsEnoughClose(_target.Get(), _inaccuracy);
     }
 }

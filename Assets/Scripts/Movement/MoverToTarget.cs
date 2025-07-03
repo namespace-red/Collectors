@@ -24,7 +24,7 @@ public class MoverToTarget : BasePhysicsMover
         set => _offset = value;
     }
 
-    protected override Vector3 Direction()
+    protected override Vector3 GetDirection()
     {
         var distance = _target.position + _target.rotation * Offset - transform.position;
         distance.y = 0;
