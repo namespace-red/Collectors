@@ -4,7 +4,7 @@ using UnityEngine;
 public class PickUpState : IState
 {
     private const int AnimationLayer = 0;
-    private const string AnimationName = "PickingUp1";
+    private readonly int _animationHash = Animator.StringToHash("Base Layer.PickingUp1");
     
     private readonly CollectorAnimations _animations;
     private readonly Transform _pickUpPoint;
@@ -37,7 +37,7 @@ public class PickUpState : IState
     {
         AnimatorStateInfo animatorStateInfo = _animations.Animator.GetCurrentAnimatorStateInfo(AnimationLayer);
 
-        if (animatorStateInfo.IsName(AnimationName) && animatorStateInfo.normalizedTime >= 1 &&
+        if (animatorStateInfo.fullPathHash == _animationHash && animatorStateInfo.normalizedTime >= 1 &&
             _animations.Animator.IsInTransition(AnimationLayer) == false)
         {
             var pickable = _moverToTarget.Target.GetComponent<IPickable>();

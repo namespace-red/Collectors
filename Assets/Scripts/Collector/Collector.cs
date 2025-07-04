@@ -6,9 +6,9 @@ using UnityEngine;
 public class Collector : MonoBehaviour
 {
     private const int AnimationLayer = 0;
-    private const string PickUpAnimationName = "PickingUp2";
-    private const string PutAnimationName = "Put2";
-    
+    private readonly int _pickUpAnimationHash = Animator.StringToHash("Base Layer.PickingUp2");
+    private readonly int _putAnimationHash = Animator.StringToHash("Base Layer.Put2");
+
     [SerializeField] private Transform _pickUpPoint;
     [SerializeField] private float _inaccuracyTarget = 1.1f;
     [SerializeField] private float _inaccuracyWaitPosition = 0.1f;
@@ -89,8 +89,8 @@ public class Collector : MonoBehaviour
         var warehouseNearbyTc = new NearbyTransitionConditions(transform, _warehousePosition, _inaccuracyWarehouse);
         var targetNearbyTc = new NearbyTransitionConditions(transform, _targetPosition, _inaccuracyTarget);
         _haveTargetTc = new FlagTransitionConditions();
-        var animatedPickUpTc = new AnimatedTransitionConditions(_animations.Animator, AnimationLayer, PickUpAnimationName);
-        var animatedPutTc = new AnimatedTransitionConditions(_animations.Animator, AnimationLayer, PutAnimationName);
+        var animatedPickUpTc = new AnimatedTransitionConditions(_animations.Animator, AnimationLayer, _pickUpAnimationHash);
+        var animatedPutTc = new AnimatedTransitionConditions(_animations.Animator, AnimationLayer, _putAnimationHash);
         
         _stateMachine = new StateMachine();
         _stateMachine.AddTransition(moverToWaitPositionState, idleState, waitPointNearbyTc);

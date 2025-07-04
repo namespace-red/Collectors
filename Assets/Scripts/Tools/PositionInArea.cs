@@ -20,13 +20,13 @@ public class PositionInArea : IPosition
     public Transform Transform
     {
         get => _transform;
-        set => throw new NotImplementedException();
+        set => throw new NotSupportedException();
     }
 
     public Vector3 Offset
     {
         get => _offset;
-        set => throw new NotImplementedException();
+        set => throw new NotSupportedException();
     }
 
     public Vector3 Get()

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PutState : IState
 {
     private const int AnimationLayer = 0;
-    private const string AnimationName = "Put1";
+    private readonly int _animationHash = Animator.StringToHash("Base Layer.Put1");
 
     private readonly CollectorAnimations _animations;
     private readonly Inventory _inventory;
@@ -34,7 +34,7 @@ public class PutState : IState
     {
         AnimatorStateInfo animatorStateInfo = _animations.Animator.GetCurrentAnimatorStateInfo(AnimationLayer);
 
-        if (animatorStateInfo.IsName(AnimationName) && animatorStateInfo.normalizedTime >= 1 &&
+        if (animatorStateInfo.fullPathHash == _animationHash && animatorStateInfo.normalizedTime >= 1 &&
             _animations.Animator.IsInTransition(AnimationLayer) == false)
         {
             var pickable = _inventory.Take();
