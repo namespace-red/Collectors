@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Spawner<T> : MonoBehaviour
+public class Factory<T> : MonoBehaviour
     where T : MonoBehaviour
 {
     [SerializeField] private T _prefab;

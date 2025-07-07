@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 485072195888475642}
-  - component: {fileID: 3781167395426417899}
   - component: {fileID: 988853930918399638}
+  - component: {fileID: 6459598734432422729}
+  - component: {fileID: 3781167395426417899}
   m_Layer: 0
   m_Name: Colony
   m_TagString: Untagged
@@ -38,21 +39,6 @@ Transform:
   - {fileID: 2401810934314034358}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3781167395426417899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1229936371173762899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f0ae333bf07e954780f4567e8241128, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pickableInWorldController: {fileID: 0}
-  _collectorSpawner: {fileID: 8623642143017179437}
-  _startCollectorsCount: 3
 --- !u!114 &988853930918399638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,6 +52,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _count: 0
+--- !u!114 &6459598734432422729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229936371173762899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d8f5a4d2fca774f8c418889edb3698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectorFactory: {fileID: 8623642143017179437}
+  _startCollectorCount: 3
+--- !u!114 &3781167395426417899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229936371173762899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0ae333bf07e954780f4567e8241128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _radar: {fileID: 0}
 --- !u!1 &2196279790921521241
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +483,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2401810934314034358}
   - component: {fileID: 381812625409804882}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: WaitArea
   m_TagString: Untagged
   m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}

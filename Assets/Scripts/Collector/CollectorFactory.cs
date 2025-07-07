@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class CollectorSpawner : Spawner<Collector>
+public class CollectorFactory : Factory<Collector>
 {
     [SerializeField, Min(0.1f)] private float _secCoolDown;
     [SerializeField] private Collider _waitArea;
@@ -37,6 +37,7 @@ public class CollectorSpawner : Spawner<Collector>
         var waitPosition = new PositionInArea(_waitArea.transform, _waitArea.bounds);
         collector.Init(waitPosition, _warehousePosition);
         
+        Created?.Invoke(collector);
         return collector;
     }
 
@@ -56,7 +57,7 @@ public class CollectorSpawner : Spawner<Collector>
 
         while (_sizeOfQueue > 0)
         {
-            Created?.Invoke(Create());
+            Create();
             yield return wait;
             _sizeOfQueue--;
         }

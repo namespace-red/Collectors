@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AreaSpawner<T> : Spawner<T>
+public class AreaFactory<T> : Factory<T>
     where T : MonoBehaviour
 {
     [SerializeField] private Collider _collider;

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ResourceSpawner : AreaSpawner<Resource>
+public class ResourceFactory : AreaFactory<Resource>
 {
     [SerializeField, Min(0.01f)] private float _secCoolDown;
     [SerializeField, Min(1)] private int _startCount;

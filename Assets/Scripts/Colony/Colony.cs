@@ -4,42 +4,32 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(ResourceWarehouse))]
+[RequireComponent(typeof(WarehouseHandler))]
 public class Colony : MonoBehaviour
 {
     [SerializeField] private Radar _radar;
-    [SerializeField] private CollectorSpawner _collectorSpawner;
-    [SerializeField, Min(1)] private int _startCollectorsCount;
-
+    
+    private WarehouseHandler _warehouseHandler;
     private List<Collector> _collectors = new List<Collector>();
 
     public ResourceWarehouse ResourceWarehouse { get; private set; }
 
-    private void OnValidate()
-    {
-        if (_collectorSpawner == null)
-            throw new NullReferenceException(nameof(_collectorSpawner));
-    }
-
     private void Awake()
     {
         ResourceWarehouse = GetComponent<ResourceWarehouse>();
+        _warehouseHandler = GetComponent<WarehouseHandler>();
     }
 
     private void OnEnable()
     {
-        _collectorSpawner.Created += OnCreatedCollector;
+        _warehouseHandler.Created += OnCreatedCollector;
         _radar.DetectedPickables += OnDetectedPickable;
     }
 
     private void OnDisable()
     {
-        _collectorSpawner.Created -= OnCreatedCollector;
+        _warehouseHandler.Created -= OnCreatedCollector;
         _radar.DetectedPickables -= OnDetectedPickable;
-    }
-
-    private void Start()
-    {
-        _collectorSpawner.Create(_startCollectorsCount);
     }
 
     private void OnCreatedCollector(Collector collector)

@@ -535,9 +535,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 544522855}
     - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+      propertyPath: _collectorCreater
+      value: 
+      objectReference: {fileID: 1960535074}
+    - target: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: pickableInWorldController
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6459598734432422729, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6459598734432422729, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+      propertyPath: collectorFactory
+      value: 
+      objectReference: {fileID: 1960535074}
     - target: {fileID: 8623642143017179437, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
       propertyPath: _parent
       value: 
@@ -658,7 +670,7 @@ GameObject:
   - component: {fileID: 1236657389}
   - component: {fileID: 1236657388}
   - component: {fileID: 1236657386}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ResourceSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -723,6 +735,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 485072195888475642, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
   m_PrefabInstance: {fileID: 1203931553}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1960535074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8623642143017179437, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+  m_PrefabInstance: {fileID: 1203931553}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65eef52483074c44a87d5e2113bb8bf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2138095505
 GameObject:
   m_ObjectHideFlags: 0
