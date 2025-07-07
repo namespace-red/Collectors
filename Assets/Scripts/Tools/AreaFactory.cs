@@ -3,23 +3,19 @@ using UnityEngine;
 public class AreaFactory<T> : Factory<T>
     where T : MonoBehaviour
 {
-    [SerializeField] private Collider _collider;
+    [SerializeField] private Collider _spawnArea;
 
-    private Bounds _bounds;
+    private PointInBox _pointInBox;
 
-    protected void Awake()
+    private void Awake()
     {
-        _bounds = _collider.bounds;
+        _pointInBox = new PointInBox(_spawnArea.bounds);
     }
 
     public override T Create()
     {
-        float x = Random.Range(_bounds.min.x, _bounds.max.x);
-        float z = Random.Range(_bounds.min.z, _bounds.max.z);
-        float y = _bounds.center.y;
-        
         T obj = base.Create();
-        obj.transform.position = new Vector3(x, y, z);
+        obj.transform.position = _pointInBox.GetRandom();
         
         return obj;
     }

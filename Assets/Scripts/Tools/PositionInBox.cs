@@ -1,20 +1,17 @@
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class PositionInArea : IPosition
+public class PositionInBox : IPosition
 {
     private readonly Transform _transform;
     private readonly Vector3 _offset;
 
-    public PositionInArea(Transform transform, Bounds bounds)
+    public PositionInBox(Transform transform, Bounds bounds)
     {
         _transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
 
-        float x = Random.Range(bounds.min.x, bounds.max.x);
-        float z = Random.Range(bounds.min.z, bounds.max.z);
-        float y = bounds.center.y;
-        _offset = new Vector3(x, y, z) - _transform.position;
+        PointInBox pointInBox = new PointInBox(bounds);
+        _offset = pointInBox.GetRandom() - _transform.position;
     }
     
     public Transform Transform

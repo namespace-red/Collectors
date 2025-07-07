@@ -1,10 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public class ResourceFactory : AreaFactory<Resource>
+public class ResourceFactory : Factory<Resource>
 {
+    [SerializeField] private Collider _spawnArea;
     [SerializeField, Min(0.01f)] private float _secCoolDown;
-    [SerializeField, Min(1)] private int _startCount;
+    [SerializeField, Min(0)] private int _startCount;
+
+    private PointInBox _pointInBox;
+
+    private void Awake()
+    {
+        _pointInBox = new PointInBox(_spawnArea.bounds);
+    }
 
     private void OnEnable()
     {
@@ -22,6 +30,8 @@ public class ResourceFactory : AreaFactory<Resource>
     public override Resource Create()
     {
         var resource = base.Create();
+        resource.transform.position = _pointInBox.GetRandom();
+        
         resource.PutPickable += DestroyResource;
         return resource;
     }

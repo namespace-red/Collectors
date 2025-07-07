@@ -34,7 +34,7 @@ public class CollectorFactory : Factory<Collector>
     {
         var collector = base.Create();
         
-        var waitPosition = new PositionInArea(_waitArea.transform, _waitArea.bounds);
+        var waitPosition = new PositionInBox(_waitArea.transform, _waitArea.bounds);
         collector.Init(waitPosition, _warehousePosition);
         
         Created?.Invoke(collector);
