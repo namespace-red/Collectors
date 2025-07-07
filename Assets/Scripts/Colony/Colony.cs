@@ -4,34 +4,66 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(ResourceWarehouse))]
-[RequireComponent(typeof(WarehouseHandler))]
 public class Colony : MonoBehaviour
 {
     [SerializeField] private Radar _radar;
+    [SerializeField] private CollectorFactory _collectorFactory;
+    [SerializeField, Min(0)] private int _startCollectorCount;
     
-    private WarehouseHandler _warehouseHandler;
+    private ResourceWarehouse _resourceWarehouse;
     private List<Collector> _collectors = new List<Collector>();
+    
+    private StateMachine _stateMachine;
+    private FlagTransitionConditions _collectorModTc;
 
-    public ResourceWarehouse ResourceWarehouse { get; private set; }
+    private void OnValidate()
+    {
+        if (_collectorFactory == null)
+            throw new NullReferenceException(nameof(_collectorFactory));
+    }
 
     private void Awake()
     {
-        ResourceWarehouse = GetComponent<ResourceWarehouse>();
-        _warehouseHandler = GetComponent<WarehouseHandler>();
+        _resourceWarehouse = GetComponent<ResourceWarehouse>();
     }
 
     private void OnEnable()
     {
-        _warehouseHandler.Created += OnCreatedCollector;
+        _collectorFactory.Created += OnCreatedCollector;
         _radar.DetectedPickables += OnDetectedPickable;
     }
 
     private void OnDisable()
     {
-        _warehouseHandler.Created -= OnCreatedCollector;
+        _collectorFactory.Created -= OnCreatedCollector;
         _radar.DetectedPickables -= OnDetectedPickable;
     }
 
+    private void Start()
+    {
+        InitStateMachine();
+    }
+
+    private void FixedUpdate()
+    {
+        _stateMachine.FixedUpdate();
+    }
+
+    private void Update()
+    {
+        _stateMachine.Update();
+    }
+
+    private void InitStateMachine()
+    {
+        var collectorCreaterState = new CollectorCreaterState(_resourceWarehouse, _collectorFactory, _startCollectorCount);
+        
+        _collectorModTc = new FlagTransitionConditions();
+        
+        _stateMachine = new StateMachine();
+        _stateMachine.SetFirstState(collectorCreaterState);
+    }
+    
     private void OnCreatedCollector(Collector collector)
     {
         _collectors.Add(collector);
@@ -44,7 +76,7 @@ public class Colony : MonoBehaviour
         switch (pickable)
         {
             case Resource resource:
-                ResourceWarehouse.Add(resource.Value);
+                _resourceWarehouse.Add(resource.Value);
                 break;
             default:
                 throw new NotSupportedException(nameof(pickable));
