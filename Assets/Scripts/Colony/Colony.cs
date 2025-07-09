@@ -9,6 +9,7 @@ public class Colony : MonoBehaviour
     [SerializeField] private Radar _radar;
     [SerializeField] private CollectorFactory _collectorFactory;
     [SerializeField, Min(0)] private int _startCollectorCount;
+    [SerializeField] private Flag _flag;
     
     private ResourceWarehouse _resourceWarehouse;
     private List<Collector> _collectors = new List<Collector>();
@@ -16,10 +17,15 @@ public class Colony : MonoBehaviour
     private StateMachine _stateMachine;
     private FlagTransitionConditions _collectorModTc;
 
+    public Flag Flag => _flag;
+
     private void OnValidate()
     {
         if (_collectorFactory == null)
             throw new NullReferenceException(nameof(_collectorFactory));
+        
+        if (_flag == null)
+            throw new NullReferenceException(nameof(_flag));
     }
 
     private void Awake()
@@ -41,6 +47,7 @@ public class Colony : MonoBehaviour
 
     private void Start()
     {
+        _flag.Remove();
         InitStateMachine();
     }
 
@@ -79,7 +86,7 @@ public class Colony : MonoBehaviour
                 _resourceWarehouse.Add(resource.Value);
                 break;
             default:
-                throw new NotSupportedException(nameof(pickable));
+                throw new ArgumentOutOfRangeException(nameof(pickable));
         }
 
         RunRadar();
