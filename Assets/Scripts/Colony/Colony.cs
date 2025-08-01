@@ -6,6 +6,10 @@ using UnityEngine;
 [RequireComponent(typeof(ResourceWarehouse))]
 public class Colony : MonoBehaviour
 {
+    private const int MinCollectors = 1;
+    private const int CollectorPrice = 3;
+    private const int ColonyPrice = 5;
+    
     [SerializeField] private Collider _waitArea;
     [SerializeField] private Transform _warehouseTransform;
     [SerializeField] private Flag _flag;
@@ -21,7 +25,7 @@ public class Colony : MonoBehaviour
     private CollectorCreaterState _collectorCreaterState;
     private ColonyCreaterState _colonyCreaterState;
     private FlagTransitionConditions _collectorModTc;
-    private FlagTransitionConditions _colonyModTc;
+    private FlagAndCountMoreTransitionConditions _colonyModTc;
 
     public Collider WaitArea => _waitArea;
     public Transform WarehouseTransform => _warehouseTransform;
@@ -101,11 +105,11 @@ public class Colony : MonoBehaviour
 
     private void InitStateMachine(ColonyFactory colonyFactory)
     {
-        _collectorCreaterState = new CollectorCreaterState(_collectorFactory, _startCollectorCount, _resourceWarehouse);
-        _colonyCreaterState = new ColonyCreaterState(colonyFactory, this);
+        _collectorCreaterState = new CollectorCreaterState(_collectorFactory, _startCollectorCount, _resourceWarehouse, CollectorPrice);
+        _colonyCreaterState = new ColonyCreaterState(colonyFactory, this, ColonyPrice);
 
         _collectorModTc = new FlagTransitionConditions();
-        _colonyModTc = new FlagTransitionConditions();
+        _colonyModTc = new FlagAndCountMoreTransitionConditions(_collectors, MinCollectors);
         
         _stateMachine = new StateMachine();
         _stateMachine.AddTransition(_collectorCreaterState, _colonyCreaterState, _colonyModTc);
