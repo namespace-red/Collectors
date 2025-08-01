@@ -4,7 +4,10 @@ public class MoverToTargetState : IState
 {
     private readonly CollectorAnimations _animations;
     private readonly MoverToTarget _moverToTarget;
+    
     private  IPosition _target;
+
+    public event Action Finished;
 
     public MoverToTargetState(CollectorAnimations animations, MoverToTarget moverToTarget, IPosition target)
     {
@@ -25,6 +28,7 @@ public class MoverToTargetState : IState
     public void Exit()
     {
         _moverToTarget.enabled = false;
+        Finished?.Invoke();
     }
     
     public void FixedUpdate()

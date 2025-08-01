@@ -3,31 +3,41 @@ using UnityEngine;
 
 public class PositionInBox : IPosition
 {
-    private readonly Transform _transform;
-    private readonly Vector3 _offset;
+    private Transform _transform;
+    private Vector3 _offset;
 
-    public PositionInBox(Transform transform, Bounds bounds)
-    {
-        _transform = transform ? transform : throw new ArgumentNullException(nameof(transform));
-
-        PointInBox pointInBox = new PointInBox(bounds);
-        _offset = pointInBox.GetRandom() - _transform.position;
-    }
-    
     public Transform Transform
     {
         get => _transform;
-        set => throw new NotSupportedException();
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(value));
+            
+            _transform = value;
+        }
     }
 
     public Vector3 Offset
     {
         get => _offset;
-        set => throw new NotSupportedException();
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(value));
+            
+            _offset = value;
+        }
     }
 
     public Vector3 Get()
     {
         return Transform.position + Transform.rotation * Offset;
+    }
+
+    public void SetRandomOffset(Bounds bounds)
+    {
+        PointInBox pointInBox = new PointInBox(bounds);
+        _offset = pointInBox.GetRandom() - _transform.position;
     }
 }

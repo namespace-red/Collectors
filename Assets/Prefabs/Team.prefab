@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1051904517084699763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1795150966932620289}
+  - component: {fileID: 5801769811925355840}
+  m_Layer: 0
+  m_Name: ColonyFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1795150966932620289
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051904517084699763}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8274802772921824750}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5801769811925355840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051904517084699763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8b94dc8610ced4b99a7ecf5a631643, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
+  _parent: {fileID: 1795150966932620289}
+  _firstPrefab: {fileID: 865600638510784641, guid: 2ec70a773879ae84bac0bf612c61f44e, type: 3}
+  _teamCollectorHandler: {fileID: 1322154135238053703}
+  _collectorParent: {fileID: 6508479119510810391}
 --- !u!1 &2031555039705632898
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,6 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8274802772921824750}
   - component: {fileID: 8279050715435056293}
+  - component: {fileID: 1322154135238053703}
   m_Layer: 0
   m_Name: Team
   m_TagString: Untagged
@@ -62,6 +112,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6508479119510810391}
+  - {fileID: 1795150966932620289}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8279050715435056293
@@ -76,5 +127,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c81ca6844dff0d42bf6d4c62cf38645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pickableDetector: {fileID: 0}
+  _colonyFactory: {fileID: 5801769811925355840}
+  _pickableDetectors: []
   _secCoolDown: 0.5
+--- !u!114 &1322154135238053703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3669586912265212530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cedc9685131d449af58022cdd75c90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colonyFactory: {fileID: 5801769811925355840}
+  _colonies: []

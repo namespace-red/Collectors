@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Radar : MonoBehaviour
+public class TeamRadar : MonoBehaviour
 {
-    [SerializeField] private PickableDetector _pickableDetector;
+    [SerializeField] private ColonyFactory _colonyFactory;
+    [SerializeField] private List<PickableDetector> _pickableDetectors;
     [SerializeField, Min(0.1f)] private float _secCoolDown;
     
     private List<IPickable> _pickableInWork = new List<IPickable>();
@@ -20,7 +21,17 @@ public class Radar : MonoBehaviour
     {
         StartCoroutine(RunDetecting());
     }
-    
+
+    private void Start()
+    {
+        _colonyFactory.Created += OnCreatedColony;
+    }
+
+    private void OnDestroy()
+    {
+        _colonyFactory.Created -= OnCreatedColony;
+    }
+
     public void Run() => enabled = true;
 
     public void Stop() => enabled = false;
@@ -34,18 +45,23 @@ public class Radar : MonoBehaviour
         return pickable;
     }
 
+    private void OnCreatedColony(Colony colony)
+    {
+        _pickableDetectors.Add(colony.PickableDetector);
+    }
+
     private IEnumerator RunDetecting()
     {
         var coolDown = new WaitForSeconds(_secCoolDown);
         
         while (enabled)
         {
-            var detectedPickable = _pickableDetector.DetectAll().ToHashSet();
-
-            if (detectedPickable.Count > 0)
+            foreach (var detectedPickables in _pickableDetectors.
+                Select(pickableDetector => pickableDetector.DetectAll().ToHashSet()).
+                Where(detectedPickables => detectedPickables.Count > 0))
             {
-                detectedPickable.ExceptWith(_pickableInWork);
-                _freePickable.UnionWith(detectedPickable);
+                detectedPickables.ExceptWith(_pickableInWork);
+                _freePickable.UnionWith(detectedPickables);
                 DetectedPickables?.Invoke();
             }
 

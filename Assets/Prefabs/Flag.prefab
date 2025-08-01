@@ -52,18 +52,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flag
       objectReference: {fileID: 0}
-    - target: {fileID: 5694059874591286030, guid: 55f3f1629cf62a140b8ea0ca4240c5e1, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5694059874591286030, guid: 55f3f1629cf62a140b8ea0ca4240c5e1, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 5694059874591286030, guid: 55f3f1629cf62a140b8ea0ca4240c5e1, type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: -840037777384891287, guid: ec630cda9cffc624b8ed29869edb6ba5, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

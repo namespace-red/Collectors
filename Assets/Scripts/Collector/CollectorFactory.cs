@@ -5,37 +5,15 @@ using UnityEngine;
 public class CollectorFactory : Factory<Collector>
 {
     [SerializeField, Min(0.1f)] private float _secCoolDown;
-    [SerializeField] private Collider _waitArea;
-    [SerializeField] private Transform _warehouse;
     
-    private IPosition _warehousePosition;
     private Coroutine _coroutine;
     private int _sizeOfQueue;
 
     public event Action<Collector> Created;
     
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        
-        if (_waitArea == null)
-            throw new NullReferenceException(nameof(_waitArea));
-        
-        if (_warehouse == null)
-            throw new NullReferenceException(nameof(_warehouse));
-    }
-
-    private void Awake()
-    {
-        _warehousePosition = new PositionPoint(_warehouse);
-    }
-
     public override Collector Create()
     {
         var collector = base.Create();
-        
-        var waitPosition = new PositionInBox(_waitArea.transform, _waitArea.bounds);
-        collector.Init(waitPosition, _warehousePosition);
         
         Created?.Invoke(collector);
         return collector;

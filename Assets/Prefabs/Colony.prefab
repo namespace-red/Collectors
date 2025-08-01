@@ -64,10 +64,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0ae333bf07e954780f4567e8241128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radar: {fileID: 0}
-  _collectorFactory: {fileID: 8623642143017179437}
-  _startCollectorCount: 3
+  _waitArea: {fileID: 381812625409804882}
+  _warehouseTransform: {fileID: 2951197370745676206}
   _flag: {fileID: 943889592546733752}
+  _pickableDetector: {fileID: 8110712973944055337}
+  _collectorFactory: {fileID: 8623642143017179437}
+  _startCollectorCount: 0
 --- !u!1 &2196279790921521241
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +113,7 @@ GameObject:
   - component: {fileID: 3380425823735737570}
   - component: {fileID: 8623642143017179437}
   m_Layer: 0
-  m_Name: CollectorSpawner
+  m_Name: CollectorFactory
   m_TagString: Untagged
   m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -144,11 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65eef52483074c44a87d5e2113bb8bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 3870659159699185756, guid: 3be6fb5feba7a5d419cfadeead577ce4, type: 3}
+  Prefab: {fileID: 3870659159699185756, guid: 3be6fb5feba7a5d419cfadeead577ce4, type: 3}
   _parent: {fileID: 3380425823735737570}
   _secCoolDown: 0.5
-  _waitArea: {fileID: 381812625409804882}
-  _warehouse: {fileID: 2951197370745676206}
 --- !u!1 &4186398441923489198
 GameObject:
   m_ObjectHideFlags: 0

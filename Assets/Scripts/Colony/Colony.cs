@@ -6,28 +6,42 @@ using UnityEngine;
 [RequireComponent(typeof(ResourceWarehouse))]
 public class Colony : MonoBehaviour
 {
-    [SerializeField] private Radar _radar;
+    [SerializeField] private Collider _waitArea;
+    [SerializeField] private Transform _warehouseTransform;
+    [SerializeField] private Flag _flag;
+    [SerializeField] private PickableDetector _pickableDetector;
     [SerializeField] private CollectorFactory _collectorFactory;
     [SerializeField, Min(0)] private int _startCollectorCount;
-    [SerializeField] private Flag _flag;
-    
+
+    private TeamCollectorHandler _teamCollectorHandler;
     private ResourceWarehouse _resourceWarehouse;
     private List<Collector> _collectors = new List<Collector>();
     
     private StateMachine _stateMachine;
+    private CollectorCreaterState _collectorCreaterState;
+    private ColonyCreaterState _colonyCreaterState;
     private FlagTransitionConditions _collectorModTc;
+    private FlagTransitionConditions _colonyModTc;
 
+    public Collider WaitArea => _waitArea;
+    public Transform WarehouseTransform => _warehouseTransform;
     public Flag Flag => _flag;
+    public PickableDetector PickableDetector => _pickableDetector;
+    public ResourceWarehouse ResourceWarehouse => _resourceWarehouse;
+    public bool NeedSendCollectorForPickable { get; set; } = true;
 
     private void OnValidate()
     {
-        if (_collectorFactory == null)
-            throw new NullReferenceException(nameof(_collectorFactory));
-        
         if (_flag == null)
             throw new NullReferenceException(nameof(_flag));
+        
+        if (_pickableDetector == null)
+            throw new NullReferenceException(nameof(_pickableDetector));
+        
+        if (_collectorFactory == null)
+            throw new NullReferenceException(nameof(_collectorFactory));
     }
-
+    
     private void Awake()
     {
         _resourceWarehouse = GetComponent<ResourceWarehouse>();
@@ -35,20 +49,16 @@ public class Colony : MonoBehaviour
 
     private void OnEnable()
     {
-        _collectorFactory.Created += OnCreatedCollector;
-        _radar.DetectedPickables += OnDetectedPickable;
+        _collectorFactory.Created += AddCollector;
+        _flag.Placed += OnPlacedFlag;
+        _flag.Removed += OnRemovedFlag;
     }
 
     private void OnDisable()
     {
-        _collectorFactory.Created -= OnCreatedCollector;
-        _radar.DetectedPickables -= OnDetectedPickable;
-    }
-
-    private void Start()
-    {
-        _flag.Remove();
-        InitStateMachine();
+        _collectorFactory.Created -= AddCollector;
+        _flag.Placed -= OnPlacedFlag;
+        _flag.Removed -= OnRemovedFlag;
     }
 
     private void FixedUpdate()
@@ -61,24 +71,62 @@ public class Colony : MonoBehaviour
         _stateMachine.Update();
     }
 
-    private void InitStateMachine()
+    public void Init(ColonyFactory colonyFactory, TeamCollectorHandler teamCollectorHandler)
     {
-        var collectorCreaterState = new CollectorCreaterState(_resourceWarehouse, _collectorFactory, _startCollectorCount);
-        
-        _collectorModTc = new FlagTransitionConditions();
-        
-        _stateMachine = new StateMachine();
-        _stateMachine.SetFirstState(collectorCreaterState);
+        _teamCollectorHandler = teamCollectorHandler;
+        InitStateMachine(colonyFactory);
+        _flag.Remove();
     }
     
-    private void OnCreatedCollector(Collector collector)
+    public bool HaveFreeCollector()
+        => _collectors.Any(collector => collector.IsBusy == false);
+
+    public Collector GetFreeCollector()
+        => _collectors.FirstOrDefault(collector => collector.IsBusy == false);
+
+    public void AddCollector(Collector collector)
     {
         _collectors.Add(collector);
-        collector.PutPickable += OnCollectorBroughtPickable;
-        RunRadar();
+        collector.PutPickable += OnCollectorPutPickable;
+        collector.SetColony(this);
+        
+        _teamCollectorHandler.RunRadar();
     }
 
-    private void OnCollectorBroughtPickable(IPickable pickable)
+    public void RemoveCollector(Collector collector)
+    {
+        _collectors.Remove(collector);
+        collector.PutPickable -= OnCollectorPutPickable;
+    }
+
+    private void InitStateMachine(ColonyFactory colonyFactory)
+    {
+        _collectorCreaterState = new CollectorCreaterState(_collectorFactory, _startCollectorCount, _resourceWarehouse);
+        _colonyCreaterState = new ColonyCreaterState(colonyFactory, this);
+
+        _collectorModTc = new FlagTransitionConditions();
+        _colonyModTc = new FlagTransitionConditions();
+        
+        _stateMachine = new StateMachine();
+        _stateMachine.AddTransition(_collectorCreaterState, _colonyCreaterState, _colonyModTc);
+        _stateMachine.AddTransition(_colonyCreaterState, _collectorCreaterState, _collectorModTc);
+        _stateMachine.SetFirstState(_collectorCreaterState);
+    }
+
+    private void OnPlacedFlag()
+    {
+        if (_stateMachine.IsCurrentState(_collectorCreaterState))
+            _colonyModTc.SetTrueFlag();
+    }
+
+
+    private void OnRemovedFlag()
+    {
+        if (_stateMachine.IsCurrentState(_colonyCreaterState))
+            _collectorModTc.SetTrueFlag();
+    }
+
+    private void OnCollectorPutPickable(IPickable pickable)
     {
         switch (pickable)
         {
@@ -89,32 +137,9 @@ public class Colony : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(pickable));
         }
 
-        RunRadar();
-    }
-
-    private void RunRadar()
-    {
-        _radar.Run();
-    }
-
-    private void OnDetectedPickable()
-    {
-        while (HaveFreeCollector() && _radar.HaveFreePickable)
+        if (NeedSendCollectorForPickable)
         {
-            Collector collector = GetFreeCollector();
-            var pickable = _radar.TakeNearestPickable(collector.transform.position);
-            collector.SetPickableTarget(pickable);
-        }
-
-        if (HaveFreeCollector() == false)
-        {
-            _radar.Stop();
+            _teamCollectorHandler.RunRadar();
         }
     }
-
-    private bool HaveFreeCollector()
-        => _collectors.Any(collector => collector.IsBusy == false);
-    
-    private Collector GetFreeCollector() 
-        => _collectors.FirstOrDefault(collector => collector.IsBusy == false);
 }

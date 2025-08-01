@@ -3,22 +3,22 @@ using System;
 public class CollectorCreaterState : IState
 {
     private const int CollectorPrice = 3;
-
-    private readonly ResourceWarehouse _resourceWarehouse;
-    private readonly CollectorFactory _collectorFactory;
     
-    public CollectorCreaterState(ResourceWarehouse resourceWarehouse, CollectorFactory collectorFactory, int startCollectorCount)
+    private readonly CollectorFactory _collectorFactory;
+    private readonly ResourceWarehouse _resourceWarehouse;
+    
+    public CollectorCreaterState(CollectorFactory collectorFactory, int startCollectorCount, ResourceWarehouse resourceWarehouse)
     {
-        _resourceWarehouse = resourceWarehouse ? resourceWarehouse : throw new ArgumentNullException(nameof(resourceWarehouse));
         _collectorFactory = collectorFactory ? collectorFactory : throw new ArgumentNullException(nameof(collectorFactory));
-        
+        _resourceWarehouse = resourceWarehouse ? resourceWarehouse : throw new ArgumentNullException(nameof(resourceWarehouse));
+    
         _collectorFactory.Create(startCollectorCount);
     }
 
     public void Enter()
     {
         _resourceWarehouse.ChangedCount += OnChangedCountResource;
-        CreateCollector();
+        TryCreateCollector();
     }
 
     public void Exit()
@@ -29,11 +29,11 @@ public class CollectorCreaterState : IState
     public void FixedUpdate() { }
 
     public void Update() { }
-
-    private void OnChangedCountResource(int _)
-        => CreateCollector();
     
-    private void CreateCollector()
+    private void OnChangedCountResource(int _)
+        => TryCreateCollector();
+    
+    private void TryCreateCollector()
     {
         if (_resourceWarehouse.IsEnough(CollectorPrice))
         {

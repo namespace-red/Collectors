@@ -4,20 +4,52 @@ using UnityEngine;
 public class Factory<T> : MonoBehaviour
     where T : MonoBehaviour
 {
-    [SerializeField] private T _prefab;
+    [SerializeField] protected T Prefab;
     [SerializeField] private Transform _parent;
+
+    private T _currentPrefab;
+
+    public Transform Parent
+    {
+        get => _parent;
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(value));
+            
+            _parent = value;
+        }
+    }
+
+    protected T CurrentPrefab
+    {
+        get => _currentPrefab;
+        set
+        {
+            if (value == null)
+                throw new NullReferenceException(nameof(value));
+
+            _currentPrefab = value;
+        }
+    }
     
     protected virtual void OnValidate()
     {
-        if (_prefab == null)
-            throw new NullReferenceException(nameof(_prefab));
+        if (Prefab == null)
+            throw new NullReferenceException(nameof(Prefab));
         
-        if (_parent == null)
-            _parent = transform;
+        if (Parent == null)
+            throw new NullReferenceException(nameof(Parent));
+    }
+
+    protected virtual void Awake()
+    {
+        if (CurrentPrefab == null)
+            CurrentPrefab = Prefab;
     }
 
     public virtual T Create()
     {
-        return Instantiate(_prefab, transform.position, Quaternion.identity, _parent);
+        return Instantiate(CurrentPrefab, transform.position, Quaternion.identity, Parent);
     }
 }

@@ -9,8 +9,10 @@ public class ResourceFactory : Factory<Resource>
 
     private PointInBox _pointInBox;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         _pointInBox = new PointInBox(_spawnArea.bounds);
     }
 

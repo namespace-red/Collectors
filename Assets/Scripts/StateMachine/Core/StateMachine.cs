@@ -23,6 +23,9 @@ public class StateMachine
         SetState(state);
     }
 
+    public bool IsCurrentState(IState state)
+        => _currentState == state;
+    
     public void AddTransition(IState fromState, IState toState, ITransitionCondition transitionCondition)
     {
         var transition = TransitionsController.CreateTransition(toState, transitionCondition);

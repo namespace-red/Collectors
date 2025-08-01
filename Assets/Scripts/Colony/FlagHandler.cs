@@ -6,9 +6,10 @@ public class FlagHandler : MonoBehaviour
     [SerializeField] private UserInput _userInput;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField, Min(0)] private float _colonyRadius;
+    [SerializeField] private ColonyFactory _colonyFactory;
     
     private Camera _camera;
-    private Mod _currentMod = Mod.GetFlag;
+    private Mod _currentMod = Mod.FirstColony;
     private Flag _currentFlag;
 
     private void OnEnable()
@@ -33,6 +34,15 @@ public class FlagHandler : MonoBehaviour
         
         switch (_currentMod)
         {
+            case Mod.FirstColony:
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer) && IsFreePlace(hit.point))
+                {
+                    _colonyFactory.CreateFirstColony(hit.point);
+                    _currentMod = Mod.GetFlag;
+                }
+                
+                break;
+                
             case Mod.GetFlag:
                 if (Physics.Raycast(ray, out hit) == false)
                 {
@@ -72,6 +82,7 @@ public class FlagHandler : MonoBehaviour
     
     private enum Mod
     {
+        FirstColony,
         GetFlag,
         PlaceFlag
     }
