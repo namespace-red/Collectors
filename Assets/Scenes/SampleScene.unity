@@ -547,8 +547,8 @@ MonoBehaviour:
   Prefab: {fileID: 5483182667446662941, guid: c22ae0f507e9a194abeb60dd8eab427b, type: 3}
   _parent: {fileID: 1236657389}
   _spawnArea: {fileID: 1236657388}
-  _secCoolDown: 1.5
-  _startCount: 25
+  _secCoolDown: 1
+  _startCount: 30
 --- !u!65 &1236657388
 BoxCollider:
   m_ObjectHideFlags: 0
