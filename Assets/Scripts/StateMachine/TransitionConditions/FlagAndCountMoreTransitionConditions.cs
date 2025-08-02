@@ -13,7 +13,13 @@ public class FlagAndCountMoreTransitionConditions : ITransitionCondition
     
     public bool IsDone()
     {
-        return _flagTc.IsDone() && _countMoreTc.IsDone();
+        bool isFlagDone = _flagTc.IsDone();
+        bool isCountMore = _countMoreTc.IsDone();
+        
+        if (isFlagDone && isCountMore == false)
+            _flagTc.SetTrueFlag();
+        
+        return isFlagDone && isCountMore;
     }
 
     public void SetTrueFlag()
