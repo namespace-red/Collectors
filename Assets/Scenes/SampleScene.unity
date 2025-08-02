@@ -547,8 +547,8 @@ MonoBehaviour:
   Prefab: {fileID: 5483182667446662941, guid: c22ae0f507e9a194abeb60dd8eab427b, type: 3}
   _parent: {fileID: 1236657389}
   _spawnArea: {fileID: 1236657388}
-  _secCoolDown: 2
-  _startCount: 15
+  _secCoolDown: 1.5
+  _startCount: 25
 --- !u!65 &1236657388
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -596,6 +596,7 @@ GameObject:
   - component: {fileID: 1443184257}
   - component: {fileID: 1443184256}
   - component: {fileID: 1443184258}
+  - component: {fileID: 1443184259}
   m_Layer: 0
   m_Name: User
   m_TagString: Untagged
@@ -640,6 +641,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e969d092e6eefa34ebe912d31933df46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _userInput: {fileID: 1443184256}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _colonyRadius: 5
+--- !u!114 &1443184259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443184255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30455f3c33f8cfd49b3e5fce69d6e4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _userInput: {fileID: 1443184256}
