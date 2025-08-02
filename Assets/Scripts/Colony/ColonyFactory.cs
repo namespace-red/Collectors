@@ -27,14 +27,8 @@ public class ColonyFactory : Factory<Colony>
     {
         var colony = base.Create();
         colony.transform.position = position;
+        colony.CollectorFactory.Parent = _collectorParent;
         colony.Init(this, _teamCollectorHandler);
-        
-        var collectorFactory = colony.GetComponentInChildren<CollectorFactory>();
-
-        if (collectorFactory == null)
-            throw new NullReferenceException("Don't have CollectorFactory");
-
-        collectorFactory.Parent = _collectorParent;
         
         Created?.Invoke(colony);
         return colony;

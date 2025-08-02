@@ -31,6 +31,7 @@ public class Colony : MonoBehaviour
     public Transform WarehouseTransform => _warehouseTransform;
     public Flag Flag => _flag;
     public PickableDetector PickableDetector => _pickableDetector;
+    public CollectorFactory CollectorFactory => _collectorFactory;
     public ResourceWarehouse ResourceWarehouse => _resourceWarehouse;
     public bool NeedSendCollectorForPickable { get; set; } = true;
 
