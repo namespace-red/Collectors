@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ColonyStateMachine;
 
 [RequireComponent(typeof(ResourceWarehouse))]
 public class Colony : MonoBehaviour
@@ -18,7 +19,6 @@ public class Colony : MonoBehaviour
     [SerializeField, Min(0)] private int _startCollectorCount;
 
     private TeamCollectorHandler _teamCollectorHandler;
-    private ResourceWarehouse _resourceWarehouse;
     private List<Collector> _collectors = new List<Collector>();
     
     private StateMachine _stateMachine;
@@ -32,7 +32,7 @@ public class Colony : MonoBehaviour
     public Flag Flag => _flag;
     public PickableDetector PickableDetector => _pickableDetector;
     public CollectorFactory CollectorFactory => _collectorFactory;
-    public ResourceWarehouse ResourceWarehouse => _resourceWarehouse;
+    public ResourceWarehouse ResourceWarehouse { get; private set; }
     public bool NeedSendCollectorForPickable { get; set; } = true;
 
     private void OnValidate()
@@ -49,7 +49,7 @@ public class Colony : MonoBehaviour
     
     private void Awake()
     {
-        _resourceWarehouse = GetComponent<ResourceWarehouse>();
+        ResourceWarehouse = GetComponent<ResourceWarehouse>();
     }
 
     private void OnEnable()
@@ -106,8 +106,8 @@ public class Colony : MonoBehaviour
 
     private void InitStateMachine(ColonyFactory colonyFactory)
     {
-        _collectorCreaterState = new CollectorCreaterState(_collectorFactory, _startCollectorCount, _resourceWarehouse, CollectorPrice);
-        _colonyCreaterState = new ColonyCreaterState(colonyFactory, this, ColonyPrice);
+        _collectorCreaterState = new CollectorCreaterState(this, _startCollectorCount,  CollectorPrice);
+        _colonyCreaterState = new ColonyCreaterState(this, colonyFactory, ColonyPrice);
 
         _collectorModTc = new FlagTransitionConditions();
         _colonyModTc = new FlagAndCountMoreTransitionConditions(_collectors, MinCollectors);
@@ -124,7 +124,6 @@ public class Colony : MonoBehaviour
             _colonyModTc.SetTrueFlag();
     }
 
-
     private void OnRemovedFlag()
     {
         if (_stateMachine.IsCurrentState(_colonyCreaterState))
@@ -136,7 +135,7 @@ public class Colony : MonoBehaviour
         switch (pickable)
         {
             case Resource resource:
-                _resourceWarehouse.Add(resource.Value);
+                ResourceWarehouse.Add(resource.Value);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(pickable));

@@ -1,46 +1,46 @@
 using System;
 
-public class CollectorCreaterState : IState
+namespace ColonyStateMachine
 {
-    private readonly CollectorFactory _collectorFactory;
-    private readonly ResourceWarehouse _resourceWarehouse;
-    private readonly int _collectorPrice;
-
-    public CollectorCreaterState(CollectorFactory collectorFactory, int startCollectorCount, 
-        ResourceWarehouse resourceWarehouse, int collectorPrice)
+    public class CollectorCreaterState : IState
     {
-        _collectorFactory = collectorFactory ? collectorFactory : throw new ArgumentNullException(nameof(collectorFactory));
-        _resourceWarehouse = resourceWarehouse ? resourceWarehouse : throw new ArgumentNullException(nameof(resourceWarehouse));
-        _collectorPrice = collectorPrice;
+        private readonly Colony _colony;
+        private readonly int _collectorPrice;
 
-        _collectorFactory.Create(startCollectorCount);
-    }
-
-    public void Enter()
-    {
-        _resourceWarehouse.ChangedCount += OnChangedCountResource;
-        TryCreateCollector();
-    }
-
-    public void Exit()
-    {
-        _resourceWarehouse.ChangedCount -= OnChangedCountResource;
-    }
-
-    public void FixedUpdate() { }
-
-    public void Update() { }
-    
-    private void OnChangedCountResource(int _)
-        => TryCreateCollector();
-    
-    private void TryCreateCollector()
-    {
-        if (_resourceWarehouse.IsEnough(_collectorPrice))
+        public CollectorCreaterState(Colony colony, int startCollectorCount, int collectorPrice)
         {
-            int count = _resourceWarehouse.Count / _collectorPrice;
-            _resourceWarehouse.Spend(count * _collectorPrice);
-            _collectorFactory.Create(count);
+            _colony = colony ? colony : throw new ArgumentNullException(nameof(colony));
+            _collectorPrice = collectorPrice;
+
+            _colony.CollectorFactory.Create(startCollectorCount);
+        }
+
+        public void Enter()
+        {
+            _colony.ResourceWarehouse.ChangedCount += OnChangedCountResource;
+            TryCreateCollector();
+        }
+
+        public void Exit()
+        {
+            _colony.ResourceWarehouse.ChangedCount -= OnChangedCountResource;
+        }
+
+        public void FixedUpdate() { }
+
+        public void Update() { }
+    
+        private void OnChangedCountResource(int _)
+            => TryCreateCollector();
+    
+        private void TryCreateCollector()
+        {
+            if (_colony.ResourceWarehouse.IsEnough(_collectorPrice))
+            {
+                int count = _colony.ResourceWarehouse.Count / _collectorPrice;
+                _colony.ResourceWarehouse.Spend(count * _collectorPrice);
+                _colony.CollectorFactory.Create(count);
+            }
         }
     }
 }
