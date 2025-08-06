@@ -9,25 +9,13 @@ public class PositionPoint : IPosition
     public Transform Transform
     {
         get => _transform;
-        set
-        {
-            if (value == null)
-                throw new NullReferenceException(nameof(value));
-            
-            _transform = value;
-        }
+        set => _transform = value;
     }
 
     public Vector3 Offset
     {
         get => _offset;
-        set
-        {
-            if (value == null)
-                throw new NullReferenceException(nameof(value));
-            
-            _offset = value;
-        }
+        set => _offset = value;
     }
 
     public Vector3 Get()

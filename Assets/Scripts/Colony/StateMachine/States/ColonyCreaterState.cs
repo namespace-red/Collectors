@@ -29,13 +29,11 @@ public class ColonyCreaterState : IState
             return;
 
         _colony.ResourceWarehouse.ChangedCount -= OnChangedCountResource;
+        _colony.NeedSendCollectorForPickable = true;
+        
         var collector = _colony.GetFreeCollector();
         collector.GotToFlag += CreateColony;
-
-        if (collector.TryGoToFlag())
-        {
-            _colony.NeedSendCollectorForPickable = true;
-        }
+        collector.GoToFlag();
     }
     
     private void OnChangedCountResource(int _)

@@ -1,26 +1,30 @@
-public class IdleState : IState
+namespace CollectorStateMachine
 {
-    private readonly CollectorAnimations _animations;
-
-    public IdleState(CollectorAnimations animations)
+    public class IdleState : IState
     {
-        _animations = animations;
-    }
+        private readonly CollectorAnimations _animations;
     
-    public void Enter()
-    {
-        _animations.PlayIdle();
-    }
-
-    public void Exit()
-    {
-    }
-
-    public void FixedUpdate()
-    {
-    }
-
-    public void Update()
-    {
+        public IdleState(CollectorAnimations animations)
+        {
+            _animations = animations;
+        }
+        
+        public void Enter()
+        {
+            _animations.PlayIdle();
+        }
+    
+        public void Exit()
+        {
+        }
+    
+        public void FixedUpdate()
+        {
+        }
+    
+        public void Update()
+        {
+        }
     }
 }
+

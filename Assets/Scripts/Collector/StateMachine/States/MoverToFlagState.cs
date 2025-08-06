@@ -2,29 +2,30 @@ using System;
 
 namespace CollectorStateMachine
 {
-    public class MoverToTargetState : IState
+    public class MoverToFlagState : IState
     {
         private readonly Collector _collector;
-        private readonly IPosition _target;
+        private readonly IPosition _flagPosition;
 
-        public MoverToTargetState(Collector collector, IPosition target)
+        public MoverToFlagState(Collector collector, IPosition flagPosition)
         {
             _collector = collector ? collector : throw new ArgumentNullException(nameof(collector));
-            _target = target ?? throw new ArgumentNullException(nameof(target));
+            _flagPosition = flagPosition ?? throw new ArgumentNullException(nameof(flagPosition));
         }
    
         public void Enter()
         {
             _collector.Animations.PlayRun();
         
-            _collector.MoverToTarget.Target = _target.Transform;
-            _collector.MoverToTarget.Offset = _target.Offset;
+            _collector.MoverToTarget.Target = _flagPosition.Transform;
+            _collector.MoverToTarget.Offset = _flagPosition.Offset;
             _collector.MoverToTarget.enabled = true;
         }
 
         public void Exit()
         {
             _collector.MoverToTarget.enabled = false;
+            _collector.CompleteGoToFlag();
         }
     
         public void FixedUpdate()

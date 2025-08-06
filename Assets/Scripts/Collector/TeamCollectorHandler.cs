@@ -38,7 +38,7 @@ public class TeamCollectorHandler : MonoBehaviour
         {
             Collector collector = GetFreeCollector();
             var pickable = _teamRadar.TakeNearestPickable(collector.transform.position);
-            collector.SetPickableTarget(pickable);
+            collector.GoToPickable(pickable);
         }
 
         if (HaveFreeCollector() == false)

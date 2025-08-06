@@ -1,47 +1,45 @@
 using System;
 using UnityEngine;
 
-public class PutState : IState
+namespace CollectorStateMachine
 {
-    private const int AnimationLayer = 0;
-    private readonly int _animationHash = Animator.StringToHash("Base Layer.Put1");
-
-    private readonly CollectorAnimations _animations;
-    private readonly Inventory _inventory;
+    public class PutState : IState
+    {
+        private const int AnimationLayer = 0;
     
-    public event Action<IPickable> PutPickable;
-
-    public PutState(CollectorAnimations animations, Inventory inventory)
-    {
-        _animations = animations ? animations : throw new ArgumentNullException(nameof(animations));
-        _inventory = inventory ?? throw new ArgumentNullException(nameof(inventory));
-    }
+        private readonly int _animationHash = Animator.StringToHash("Base Layer.Put1");
+        private readonly Collector _collector;
     
-    public void Enter()
-    {
-        _animations.PlayPut1();
-    }
-
-    public void Exit()
-    {
-    }
-
-    public void FixedUpdate()
-    {
-    }
-
-    public void Update()
-    {
-        AnimatorStateInfo animatorStateInfo = _animations.Animator.GetCurrentAnimatorStateInfo(AnimationLayer);
-
-        if (animatorStateInfo.fullPathHash == _animationHash && animatorStateInfo.normalizedTime >= 1 &&
-            _animations.Animator.IsInTransition(AnimationLayer) == false)
+        public PutState(Collector collector)
         {
-            var pickable = _inventory.Take();
-            pickable.Put();
-            _animations.PlayPut2();
-            
-            PutPickable?.Invoke(pickable);
+            _collector = collector ? collector : throw new ArgumentNullException(nameof(collector));
+        }
+    
+        public void Enter()
+        {
+            _collector.Animations.PlayPut1();
+        }
+
+        public void Exit()
+        {
+        }
+
+        public void FixedUpdate()
+        {
+        }
+
+        public void Update()
+        {
+            AnimatorStateInfo animatorStateInfo = _collector.Animations.Animator.GetCurrentAnimatorStateInfo(AnimationLayer);
+
+            if (animatorStateInfo.fullPathHash == _animationHash && animatorStateInfo.normalizedTime >= 1 &&
+                _collector.Animations.Animator.IsInTransition(AnimationLayer) == false)
+            {
+                var pickable = _collector.Inventory.Take();
+                pickable.Put();
+                _collector.Animations.PlayPut2();
+                _collector.CompletePutPickable(pickable);
+            }
         }
     }
 }
