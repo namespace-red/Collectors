@@ -2,48 +2,44 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(TeamRadar))]
+[RequireComponent(typeof(TeamPickableHandler))]
 public class TeamCollectorHandler : MonoBehaviour
 {
     [SerializeField] private ColonyFactory _colonyFactory;
-    [SerializeField] private List<Colony> _colonies;
-
-    private TeamRadar _teamRadar;
+    
+    private List<Colony> _colonies = new List<Colony>();
+    private TeamPickableHandler _teamPickableHandler;
 
     private void Awake()
     {
-        _teamRadar = GetComponent<TeamRadar>();
+        _teamPickableHandler = GetComponent<TeamPickableHandler>();
     }
 
     private void OnEnable()
     {
-        _teamRadar.DetectedPickables += OnDetectedPickable;
+        _teamPickableHandler.AddedPickables += SendCollectorForPickable;
         _colonyFactory.Created += _colonies.Add;
     }
 
     private void OnDisable()
     {
-        _teamRadar.DetectedPickables -= OnDetectedPickable;
+        _teamPickableHandler.AddedPickables -= SendCollectorForPickable;
         _colonyFactory.Created -= _colonies.Add;
     }
 
-    public void RunRadar()
+    private void SendCollectorForPickable()
     {
-        _teamRadar.Run();
-    }
-
-    private void OnDetectedPickable()
-    {
-        while (HaveFreeCollector() && _teamRadar.HaveFreePickable)
+        while (HaveFreeCollector() && _teamPickableHandler.HaveFreePickable)
         {
             Collector collector = GetFreeCollector();
-            var pickable = _teamRadar.TakeNearestPickable(collector.transform.position);
+            var pickable = _teamPickableHandler.TakeNearestPickable(collector.transform.position);
             collector.GoToPickable(pickable);
         }
 
         if (HaveFreeCollector() == false)
         {
-            _teamRadar.Stop();
+            foreach (var colony in _colonies)
+                colony.StopPickableDetector();
         }
     }
 

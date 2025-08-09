@@ -21,21 +21,7 @@ public class BaseDetector<T> : MonoBehaviour
         Gizmos.DrawWireSphere(Center, Radius);
     }
 
-    public bool TryDetect(out T target)
-    {
-        foreach (var collider in FindColliders())
-        {
-            if (collider.TryGetComponent(out target))
-            {
-                return true;
-            }
-        }
-
-        target = default;
-        return false;
-    }
-    
-    public IEnumerable<T> DetectAll()
+    public ICollection<T> DetectAll()
     {
         var targets = new List<T>();
 

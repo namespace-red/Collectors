@@ -47,7 +47,7 @@ MonoBehaviour:
   Prefab: {fileID: 3781167395426417899, guid: cc72638a5f54cde4c835fbc92e61b980, type: 3}
   _parent: {fileID: 1795150966932620289}
   _firstPrefab: {fileID: 865600638510784641, guid: 2ec70a773879ae84bac0bf612c61f44e, type: 3}
-  _teamCollectorHandler: {fileID: 1322154135238053703}
+  _teamPickableHandler: {fileID: 8279050715435056293}
   _collectorParent: {fileID: 6508479119510810391}
 --- !u!1 &2031555039705632898
 GameObject:
@@ -127,9 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c81ca6844dff0d42bf6d4c62cf38645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _colonyFactory: {fileID: 5801769811925355840}
-  _pickableDetectors: []
-  _secCoolDown: 0.5
 --- !u!114 &1322154135238053703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,4 +140,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _colonyFactory: {fileID: 5801769811925355840}
-  _colonies: []
