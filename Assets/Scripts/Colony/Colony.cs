@@ -62,7 +62,10 @@ public class Colony : MonoBehaviour
         _collectorFactory.Created += AddCollector;
         _flag.Placed += OnPlacedFlag;
         _flag.Removed += OnRemovedFlag;
-        _pickableDetector.DetectedPickables += OnDetectedPickables;
+        _pickableDetector.DetectedPickables += AddPickablesToHandler;
+        
+        if (_teamPickableHandler != null)
+            _teamPickableHandler.AddedPickables += TrySendCollectorsForPickable;
     }
 
     private void OnDisable()
@@ -70,7 +73,8 @@ public class Colony : MonoBehaviour
         _collectorFactory.Created -= AddCollector;
         _flag.Placed -= OnPlacedFlag;
         _flag.Removed -= OnRemovedFlag;
-        _pickableDetector.DetectedPickables -= OnDetectedPickables;
+        _pickableDetector.DetectedPickables -= AddPickablesToHandler;
+        _teamPickableHandler.AddedPickables -= TrySendCollectorsForPickable;
     }
 
     private void FixedUpdate()
@@ -86,25 +90,24 @@ public class Colony : MonoBehaviour
     public void Init(ColonyFactory colonyFactory, TeamPickableHandler teamPickableHandler)
     {
         _teamPickableHandler = teamPickableHandler;
+        _teamPickableHandler.AddedPickables += TrySendCollectorsForPickable;
         InitStateMachine(colonyFactory);
         _flag.Remove();
     }
 
-    public void StopPickableDetector()
-        => _pickableDetector.Stop();
-    
     public bool HaveFreeCollector()
-        => _collectors.Any(collector => collector.IsBusy == false);
+        => _collectors.Any(collector => collector.IsFree);
 
     public bool HaveFreeCollectorForPickable()
         => NeedSendCollectorForPickable && HaveFreeCollector();
 
     public Collector GetFreeCollector()
-        => _collectors.FirstOrDefault(collector => collector.IsBusy == false);
+        => _collectors.FirstOrDefault(collector => collector.IsFree);
 
     public void AddCollector(Collector collector)
     {
         _collectors.Add(collector);
+        collector.WasFreed += OnCollectorWasFreed;
         collector.PutPickable += OnCollectorPutPickable;
         collector.SetColony(this);
         
@@ -114,6 +117,7 @@ public class Colony : MonoBehaviour
     public void RemoveCollector(Collector collector)
     {
         _collectors.Remove(collector);
+        collector.WasFreed -= OnCollectorWasFreed;
         collector.PutPickable -= OnCollectorPutPickable;
     }
 
@@ -143,9 +147,30 @@ public class Colony : MonoBehaviour
             _collectorModTc.SetTrueFlag();
     }
 
-    private void OnDetectedPickables(ICollection<IPickable> detectedPickables)
+    private void AddPickablesToHandler(ICollection<IPickable> pickables)
     {
-        _teamPickableHandler.AddPickables(detectedPickables);
+        _teamPickableHandler.AddPickables(pickables);
+    }
+
+    private void TrySendCollectorsForPickable()
+    {
+        while (_teamPickableHandler.HaveFreePickable && HaveFreeCollectorForPickable())
+        {
+            Collector collector = GetFreeCollector();
+            var pickable = _teamPickableHandler.TakeNearestPickable(collector.transform.position);
+            collector.GoToPickable(pickable);
+        }
+        
+        if (HaveFreeCollectorForPickable() == false)
+        {
+            _pickableDetector.Stop();
+        }
+    }
+
+    private void OnCollectorWasFreed(Collector _)
+    {
+        if (NeedSendCollectorForPickable)
+            TrySendCollectorsForPickable();
     }
 
     private void OnCollectorPutPickable(IPickable pickable)

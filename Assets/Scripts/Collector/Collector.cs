@@ -24,11 +24,24 @@ public class Collector : MonoBehaviour
     private PositionPoint _warehousePosition = new PositionPoint();
     private PositionPoint _flagPosition = new PositionPoint();
     private PositionPoint _pickablePosition = new PositionPoint();
+    private bool _isFree = true;
 
     public event Action<Collector> GotToFlag;
     public event Action<IPickable> PutPickable;
-    
-    public bool IsBusy { get; private set; }
+    public event Action<Collector> WasFreed;
+
+    public bool IsFree
+    {
+        get => _isFree;
+        private set
+        {
+            _isFree = value;
+            
+            if (value)
+                WasFreed?.Invoke(this);
+        }
+    }
+
     public MoverToTarget MoverToTarget { get; private set; }
     public CollectorAnimations Animations { get; private set; }
     public Inventory Inventory { get; } = new Inventory();
@@ -72,28 +85,28 @@ public class Collector : MonoBehaviour
     
     public void GoToPickable(IPickable target)
     {
-        IsBusy = true;
         _pickablePosition.Transform = target.Transform;
         _havePickableTc.SetTrueFlag();
+        IsFree = false;
     }
 
     public void CompletePutPickable(IPickable pickable)
     {
-        IsBusy = false;
         _pickablePosition.Transform = null;
         PutPickable?.Invoke(pickable);
+        IsFree = true;
     }
 
     public void GoToFlag()
     {
-        IsBusy = true;
         _needGoToFlagTc.SetTrueFlag();
+        IsFree = false;
     }
     
     public void CompleteGoToFlag()
     {
-        IsBusy = false;
         GotToFlag?.Invoke(this);
+        IsFree = true;
     }
 
     private void InitStateMachine()
