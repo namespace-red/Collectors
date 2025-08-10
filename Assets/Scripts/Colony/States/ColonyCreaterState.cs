@@ -8,6 +8,8 @@ namespace ColonyStateMachine
         private readonly Colony _colony;
         private readonly int _colonyPrice;
 
+        private bool _needSendCollectorToFlag;
+
         public ColonyCreaterState(Colony colony, ColonyFactory colonyFactory, int colonyPrice)
         {
             _colony = colony ? colony : throw new ArgumentNullException(nameof(colony));
@@ -27,11 +29,12 @@ namespace ColonyStateMachine
 
         public void Update()
         {
-            if (_colony.NeedSendCollectorForPickable || _colony.HaveFreeCollector() == false)
+            if (_needSendCollectorToFlag == false || _colony.HaveFreeCollector() == false)
                 return;
 
             _colony.ResourceWarehouse.ChangedCount -= OnChangedCountResource;
             _colony.NeedSendCollectorForPickable = true;
+            _needSendCollectorToFlag = false;
         
             var collector = _colony.GetFreeCollector();
             collector.GotToFlag += CreateColony;
@@ -46,6 +49,7 @@ namespace ColonyStateMachine
             if (_colony.ResourceWarehouse.IsEnough(_colonyPrice))
             {
                 _colony.NeedSendCollectorForPickable = false;
+                _needSendCollectorToFlag = true;
             }
         }
 

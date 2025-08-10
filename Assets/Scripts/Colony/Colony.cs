@@ -30,7 +30,6 @@ public class Colony : MonoBehaviour
     public Collider WaitArea => _waitArea;
     public Transform WarehouseTransform => _warehouseTransform;
     public Flag Flag => _flag;
-    public PickableDetector PickableDetector => _pickableDetector;
     public CollectorFactory CollectorFactory => _collectorFactory;
     public ResourceWarehouse ResourceWarehouse { get; private set; }
     public bool NeedSendCollectorForPickable { get; set; } = true;
@@ -97,6 +96,9 @@ public class Colony : MonoBehaviour
     public bool HaveFreeCollector()
         => _collectors.Any(collector => collector.IsBusy == false);
 
+    public bool HaveFreeCollectorForPickable()
+        => NeedSendCollectorForPickable && HaveFreeCollector();
+
     public Collector GetFreeCollector()
         => _collectors.FirstOrDefault(collector => collector.IsBusy == false);
 
@@ -157,9 +159,6 @@ public class Colony : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(pickable));
         }
 
-        if (NeedSendCollectorForPickable)
-        {
-            _pickableDetector.Run();
-        }
+        _pickableDetector.Run();
     }
 }

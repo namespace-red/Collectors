@@ -29,7 +29,7 @@ public class TeamCollectorHandler : MonoBehaviour
 
     private void SendCollectorForPickable()
     {
-        while (HaveFreeCollector() && _teamPickableHandler.HaveFreePickable)
+        while (_teamPickableHandler.HaveFreePickable && HaveFreeCollector())
         {
             Collector collector = GetFreeCollector();
             var pickable = _teamPickableHandler.TakeNearestPickable(collector.transform.position);
@@ -44,16 +44,16 @@ public class TeamCollectorHandler : MonoBehaviour
     }
 
     private bool HaveFreeCollector()
-        => _colonies.Any(colony => colony.HaveFreeCollector());
+        => _colonies.Any(colony => colony.HaveFreeCollectorForPickable());
 
     private Collector GetFreeCollector()
     {
         foreach (var colony in _colonies)
         {
-            if (colony.HaveFreeCollector())
-            {
+            if (colony.HaveFreeCollectorForPickable())
                 return colony.GetFreeCollector();
-            }
+            
+            colony.StopPickableDetector();
         }
         
         return null;
